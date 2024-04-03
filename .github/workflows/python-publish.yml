@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main  # replace 'main' with the name of your branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python -
+
+    - name: Install dependencies
+      run: |
+        poetry install
+
+    - name: Build
+      run: |
+        poetry build
+
+    - name: Get version
+      id: get_version
+      run: |
+        echo ::set-output name=VERSION::$(poetry version | awk '{print $2}')
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}-${{ steps.get_version.outputs.VERSION }}
+        release_name: Release ${{ github.ref_name }}-${{ steps.get_version.outputs.VERSION }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/discord_bot-${{ steps.get_version.outputs.VERSION }}.tar.gz
+        asset_name: discord_bot-${{ steps.get_version.outputs.VERSION }}.tar.gz
+        asset_content_type: application/gzip
