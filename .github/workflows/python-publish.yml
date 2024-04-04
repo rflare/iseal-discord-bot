@@ -56,3 +56,14 @@ jobs:
         asset_path: ./dist/discord_bot-${{ steps.get_version.outputs.VERSION }}.tar.gz
         asset_name: discord_bot-${{ steps.get_version.outputs.VERSION }}.tar.gz
         asset_content_type: application/gzip
+
+    - name: Upload Release Asset2
+      id: upload-release-asset2
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/discord_bot-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
+        asset_name: discord_bot-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
+        asset_content_type: application/whl
