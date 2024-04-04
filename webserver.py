@@ -20,7 +20,9 @@ def handle_webhook():
             print("Code fetched successfully!")
 
             # Signals watcher to restart script
-            open('restart.txt', 'w').close()
+            with open('restart.txt', 'w') as f:
+                f.write('restart')
+                f.close()
 
     except Exception as e:
         return jsonify({'error': str(e)})
