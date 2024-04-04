@@ -24,6 +24,7 @@ def handle_webhook():
 
     except Exception as e:
         return jsonify({'error': str(e)})
+    return jsonify({'message': 'success'})
 
 if __name__ == '__main__':
     # Start the discord bot in a separate thread
