@@ -7,7 +7,7 @@ import sys
 app = Flask(__name__)
 
 def run_discord_bot():
-    import connect
+    import src.main
     pass
 
 @app.route('/Iseal-Discord-Bot', methods=['POST'])
