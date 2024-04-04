@@ -3,7 +3,7 @@ from threading import Thread
 import subprocess
 import os
 import sys
-
+from src.main import stop
 app = Flask(__name__)
 
 def run_discord_bot():
@@ -15,6 +15,8 @@ def handle_webhook():
     try:
         # Pull changes from git
             subprocess.run(['git', 'pull'])
+        # Stop the bot
+            stop()
         # Signals watcher to restart script
             with open('restart.txt', 'w') as f:
                 f.write('restart')

@@ -293,4 +293,10 @@ async def on_message(message): # This event triggers when a message is sent anyw
             await message.channel.join()
             return
 
+async def stop():
+    if not client.is_closed():
+        await client.close()
+    else:
+        raise RuntimeError("Bot connection is already closed.")
+
 client.run(TOKEN)
