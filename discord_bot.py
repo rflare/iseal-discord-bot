@@ -4,7 +4,7 @@ import os
 
 while True:
     print("Starting bot and webserver...")
-    bot_process = subprocess.Popen(['python', 'webserver.py'])
+    bot_process = subprocess.Popen(['python3', 'webserver.py'])
 
     while not os.path.exists('restart.txt'):
         time.sleep(1)
