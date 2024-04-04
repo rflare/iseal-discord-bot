@@ -12,4 +12,6 @@ while True:
 
     print("Restart signal received. Restarting bot...")
     bot_process.terminate()
+    bot_process.wait()
     os.remove('restart.txt')
+    print("Bot restarted.")
