@@ -4,11 +4,10 @@ from discord import app_commands
 from discord import ui
 import datetime
 import os
-import functions.checks as checks
-import functions.embed_creator as embeds
-import functions.threads as threads
+import src.functions.checks as checks
+import src.functions.embed_creator as embeds
+import src.functions.threads as threads
 from dotenv import load_dotenv
-from webhook_listener import handle_webhook
 
 load_dotenv()
 
@@ -293,6 +292,5 @@ async def on_message(message): # This event triggers when a message is sent anyw
         if not any(member.id == client.user.id for member in message.channel.members): # If the bot is not in the thread, we join it
             await message.channel.join()
             return
-handle_webhook()
 
 client.run(TOKEN)

@@ -1,10 +1,14 @@
 from flask import Flask, request, jsonify
+from threading import Thread
 import subprocess
 import os
-import signal
 import sys
 
 app = Flask(__name__)
+
+def run_discord_bot():
+    import connect
+    pass
 
 @app.route('/Iseal-Discord-Bot', methods=['POST'])
 def handle_webhook():
@@ -14,11 +18,17 @@ def handle_webhook():
             print("Received a push to the master branch. Fetching latest code...")
             subprocess.run(['git', 'pull'])
             print("Code fetched successfully!")
-            jsonify({'message': 'Webhook received, code fetched, and script restarted!'})
-            return os.execv(sys.executable, ['python', '~/src/main.py'] + sys.argv)
-        else:
-            return jsonify({'message': 'Ignoring non-master branch push event.'})
+
+            # Restart the script
+            os.execv(sys.executable, ['python'] + sys.argv)
+
     except Exception as e:
         return jsonify({'error': str(e)})
+
 if __name__ == '__main__':
+    # Start the discord bot in a separate thread
+    bot_thread = Thread(target=run_discord_bot)
+    bot_thread.start()
+
+    # Start the server
     app.run(host='0.0.0.0', port=8080)
