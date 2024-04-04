@@ -7,7 +7,7 @@ while True:
     bot_process = subprocess.Popen(['python3', 'webserver.py'])
 
     while not os.path.exists('restart.txt'):
-        time.sleep(1)
+        time.sleep(120)
 
     print("Restart signal received. Restarting bot...")
     bot_process.terminate()
