@@ -24,10 +24,6 @@ def handle_webhook():
         return jsonify({'error': str(e)})
     return jsonify({'message': 'success'})
 
-@app.route('/Iseal-Discord-Bot', methods=['GET'])
-def handle_get_request():
-    return "<script>window.close();</script>"
-
 if __name__ == '__main__':
     # Start the discord bot in a separate thread
     bot_thread = Thread(target=run_discord_bot)
