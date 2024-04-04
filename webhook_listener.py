@@ -15,7 +15,7 @@ def handle_webhook():
             subprocess.run(['git', 'pull'])
             print("Code fetched successfully!")
             jsonify({'message': 'Webhook received, code fetched, and script restarted!'})
-            return os.execv(sys.executable, ['python', '~/main.py'] + sys.argv)
+            return os.execv(sys.executable, ['python', '~/src/main.py'] + sys.argv)
         else:
             return jsonify({'message': 'Ignoring non-master branch push event.'})
     except Exception as e:
@@ -23,3 +23,5 @@ def handle_webhook():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+
+os.execv(sys.executable, ['python', '~/src/main.py'])
