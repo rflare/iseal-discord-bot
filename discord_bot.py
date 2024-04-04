@@ -2,7 +2,6 @@ import time
 import subprocess
 import os
 
-test = subprocess.Popen(['python3', 'test.py'])
 
 while True:
     print("Starting bot and webserver...")
