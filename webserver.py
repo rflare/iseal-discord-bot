@@ -13,13 +13,9 @@ def run_discord_bot():
 @app.route('/Iseal-Discord-Bot', methods=['POST'])
 def handle_webhook():
     try:
-        payload = request.json
-        if 'ref' in payload and payload['ref'] == 'refs/heads/master':
-            print("Received a push to the master branch. Fetching latest code...")
+        # Pull changes from git
             subprocess.run(['git', 'pull'])
-            print("Code fetched successfully!")
-
-            # Signals watcher to restart script
+        # Signals watcher to restart script
             with open('restart.txt', 'w') as f:
                 f.write('restart')
                 f.close()
