@@ -1,5 +1,5 @@
 import discord
-import src.functions.checks as checks
+import functions.checks as checks
 
 # async def cembed(title,content):
 #        embed = discord.Embed(title=title, description=content, color=discord.Color.blue().value)

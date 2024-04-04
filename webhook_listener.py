@@ -20,8 +20,5 @@ def handle_webhook():
             return jsonify({'message': 'Ignoring non-master branch push event.'})
     except Exception as e:
         return jsonify({'error': str(e)})
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
-
-os.execv(sys.executable, ['python', '~/src/main.py'])
