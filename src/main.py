@@ -299,4 +299,5 @@ async def stop():
     else:
         raise RuntimeError("Bot connection is already closed.")
 
-client.run(TOKEN)
+def run():
+    client.run(TOKEN)
