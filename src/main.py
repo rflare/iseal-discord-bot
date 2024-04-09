@@ -9,6 +9,7 @@ import src.functions.embed_creator as embeds
 import src.functions.threads as threads
 from dotenv import load_dotenv
 
+# ---------------------- Variables ---------------------- #
 load_dotenv()
 
 owners = [905758994155589642,398908171357519872]
@@ -37,7 +38,194 @@ class aclient(discord.Client):
 
 client = aclient()
 tree = app_commands.CommandTree(client)
+allowed_mentions = discord.AllowedMentions(roles = True)
 
+# ---------------------- GUIs ---------------------- #
+class WikiSelect(discord.ui.Select):
+    def __init__(self):
+        options=[
+            discord.SelectOption(label="PowerGems"),
+            discord.SelectOption(label="OrePowers"),
+            discord.SelectOption(label="Valocraft"),
+            discord.SelectOption(label="ParkourProject")
+            ]
+        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+    async def callback(self, interaction: discord.Interaction):
+        print(self.values)
+        if self.values == ['PowerGems']:
+            link = "https://powergems.iseal.dev"
+            name = "PowerGems"
+        elif self.values == ['OrePowers']:
+            # link = "https://orepowers.iseal.dev"
+            link = "Unavailable"
+            name = "OrePowers"
+        elif self.values == ['Valocraft']:
+            # link = "https://valocraft.iseal.dev"
+            link = "Unavailable"
+            name = "Valocraft"
+        elif self.values == ['ParkourProject']:
+            # link = "https://parkourproject.iseal.dev"
+            link = "Unavailable"
+            name = "ParkourProject"
+        else:
+            return
+        roles = [role.name for role in interaction.user.roles]
+        if await checks.check_roles(roles) == True:
+            await interaction.response.edit_message(content=f"Here is the wiki link to {name}: {link}", view=None)
+        else:
+            await interaction.response.send_message(f"Here is the wiki link to {name}: {link}", ephemeral=True)
+class WikiSelectView(discord.ui.View):
+    def __init__(self, *, timeout = 180):
+        super().__init__(timeout=timeout)
+        self.add_item(WikiSelect())
+
+class ResourceSelect(discord.ui.Select):
+    def __init__(self):
+        options=[
+            discord.SelectOption(label="Resource Pack"),
+            discord.SelectOption(label="Recipes")
+            ]
+        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+    async def callback(self, interaction: discord.Interaction):
+        print(self.values)
+        if self.values == ['Resource Pack']:
+            await interaction.response.edit_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView(), ephemeral=True)
+        elif self.values == ['Recipes']:
+            await interaction.response.edit_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView(), ephemeral=True)
+class ResourceSelectView(discord.ui.View):
+    def __init__(self, *, timeout = 180):
+        super().__init__(timeout=timeout)
+        self.add_item(ResourceSelect())
+
+
+class ResourcePackSelect(discord.ui.Select):
+    def __init__(self):
+        options=[
+            discord.SelectOption(label="PowerGems"),
+            discord.SelectOption(label="OrePowers"),
+            discord.SelectOption(label="Valocraft"),
+            discord.SelectOption(label="ParkourProject")
+            ]
+        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+    async def callback(self, interaction: discord.Interaction):
+        print(self.values)
+        if self.values == ['PowerGems']:
+            name = "PowerGems"
+            file_paths = ["~/src/resource_packs/Powergems_Pack.zip","~/src/resource_packs/PowerGems_magic_pack.zip"]
+            file_objects = []
+        elif self.values == ['OrePowers']:
+            name = "OrePowers"
+            return interaction.response.edit_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(), ephemeral=True)
+            file_paths = []
+            file_objects = []
+        elif self.values == ['Valocraft']:
+            name = "Valocraft"
+            return interaction.response.edit_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(), ephemeral=True)
+            file_paths = []
+            file_objects = []
+        elif self.values == ['ParkourProject']:
+            name = "ParkourProject"
+            return interaction.response.edit_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(), ephemeral=True)
+            file_paths = []
+            file_objects = []
+        else:
+            return
+        roles = [role.name for role in interaction.user.roles]
+        for file_path in file_paths:
+            file_objects.append(discord.File(file_path))
+        if await checks.check_roles(roles) == True:
+            await interaction.response.edit_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, ephemeral=False, files=file_objects)
+        else:
+            await interaction.response.edit_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None, ephemeral=True, Files=file_objects)
+
+class ResourcePackSelectView(discord.ui.View):
+    def __init__(self, *, timeout = 180):
+        super().__init__(timeout=timeout)
+        self.add_item(ResourcePackSelect())
+
+class RecpieSelect(discord.ui.Select):
+    def __init__(self):
+        options=[
+            discord.SelectOption(label="PowerGems"),
+            discord.SelectOption(label="OrePowers"),
+            discord.SelectOption(label="Valocraft"),
+            discord.SelectOption(label="ParkourProject")
+            ]
+        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+    async def callback(self, interaction: discord.Interaction):
+        print(self.values)
+        if self.values == ['PowerGems']:
+            name = "PowerGems"
+            return interaction.response.edit_message(content="Select one of the following recpies:", ephemeral=True, view=PowergemsRecpieSelectView())
+        elif self.values == ['OrePowers']:
+            name = "OrePowers"
+            return interaction.response.edit_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(), ephemeral=True)
+        elif self.values == ['Valocraft']:
+            name = "Valocraft"
+            return interaction.response.edit_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(), ephemeral=True)
+        elif self.values == ['ParkourProject']:
+            name = "ParkourProject"
+            return interaction.response.edit_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView(), ephemeral=True)
+        else:
+            return
+
+class RecpieSelectView(discord.ui.View):
+    def __init__(self, *, timeout = 180):
+        super().__init__(timeout=timeout)
+        self.add_item(RecpieSelect())
+
+class PowergemsRecpieSelect(discord.ui.Select):
+    def __init__(self):
+        options=[
+            discord.SelectOption(label="New gem"),
+            discord.SelectOption(label="Upgrading a gem"),
+            discord.SelectOption(label="All")
+            ]
+        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+    async def callback(self, interaction: discord.Interaction):
+        print(self.values)
+        if self.values == ['New gem']:
+            name = "New Gem"
+            file_paths = ["~/src/recpies/pg_new.png"]
+            file_objects = []
+        elif self.values == ['Upgrading a gem']:
+            name = "Upgrading a gem"
+            file_paths = ["~/src/recpies/pg_upgrade.png"]
+            file_objects = []
+        elif self.values == ['All']:
+            name = "All"
+            file_paths = ["~/src/recpies/pg_new.png","~/src/recpies/pg_upgrade.png"]
+            file_objects = []
+        else:
+            return
+        roles = [role.name for role in interaction.user.roles]
+        for file_path in file_paths:
+            file_objects.append(discord.File(file_path))
+        if await checks.check_roles(roles) == True:
+            await interaction.response.edit_message(content=f"Here is the recpie for {name} PowerGems", view=PowergemsRecpieSelectView(), ephemeral=False, files=file_objects)
+        else:
+            await interaction.response.edit_message(f"Here is the recpie for {name} PowerGems",  view=PowergemsRecpieSelectView(), ephemeral=True, Files=file_objects)
+
+class PowergemsRecpieSelectView(discord.ui.View):
+    def __init__(self, *, timeout = 180):
+        super().__init__(timeout=timeout)
+        self.add_item(PowergemsRecpieSelect())
+
+class UpdateModal(ui.Modal, title='Information Required'):
+    name = ui.TextInput(label='Name of plugin')
+    version = ui.TextInput(label='Version of update')
+    content = ui.TextInput(label='Content of update', style=discord.TextStyle.paragraph)
+    async def on_submit(self, interaction: discord.Interaction):
+        embed, role_id = await embeds.update_embed(self.name, self.version, self.content, interaction)
+        role = interaction.guild.get_role(role_id)
+        if role_id == 0:
+            await interaction.response.send_message(content="Failed to find plugin name (required to ping memebers) please try again", ephemeral=True)
+            return
+        else:
+            await interaction.response.send_message(content=f"||{role.mention}||", embed=embed, allowed_mentions=allowed_mentions)
+            return
+
+#---------------------- Commands ----------------------#
 
 @tree.command(name='rules', description='Sends the rules in the current channel', )
 async def rules(interaction: discord.Interaction):
@@ -86,12 +274,12 @@ async def format(interaction: discord.Interaction, format_name:str):
 @tree.command(name='resourcepack', description='Send the resource pack link to the current channel (PowerGems)')
 async def resourcepack(interaction: discord.Interaction):
     roles = [role.name for role in interaction.user.roles]
+    embed = await embeds.resourcepack_embed(resouce_pack, m_resouce_pack)
     if await checks.check_roles(roles) == True:
-        embed = await embeds.resourcepack_embed(resouce_pack, m_resouce_pack)
         await interaction.response.send_message(embed=embed)
         return
     else:
-        await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         return
 
 
@@ -99,21 +287,7 @@ async def resourcepack(interaction: discord.Interaction):
 async def update(interaction: discord.Interaction):
     roles = [role.name for role in interaction.user.roles]
     if await checks.check_roles(roles) == True:
-        allowed_mentions = discord.AllowedMentions(roles = True)
-        class Questionnaire(ui.Modal, title='Information Required'):
-            name = ui.TextInput(label='Name of plugin')
-            version = ui.TextInput(label='Version of update')
-            content = ui.TextInput(label='Content of update', style=discord.TextStyle.paragraph)
-            async def on_submit(self, interaction: discord.Interaction):
-                embed, role_id = await embeds.update_embed(self.name, self.version, self.content, interaction)
-                role = interaction.guild.get_role(role_id)
-                if role_id == 0:
-                    await interaction.response.send_message(content="Failed to find plugin name (required to ping memebers) please try again", ephemeral=True)
-                    return
-                else:
-                    await interaction.response.send_message(content=f"||{role.mention}||", embed=embed, allowed_mentions=allowed_mentions)
-                    return
-        await interaction.response.send_modal(Questionnaire())
+        await interaction.response.send_modal(UpdateModal())
         return
     else:
         await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
@@ -122,81 +296,25 @@ async def update(interaction: discord.Interaction):
 @tree.command(name='rp', description='Sends the resourcepack into current channel')
 async def rp(interaction: discord.Interaction):
     roles = [role.name for role in interaction.user.roles]
+    embed = await embeds.resourcepack_embed(resouce_pack, m_resouce_pack)
     if await checks.check_roles(roles) == True:
-        embed = await embeds.resourcepack_embed(resouce_pack, m_resouce_pack)
         await interaction.response.send_message(embed=embed)
         return
     else:
-        await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         return
-
-# @tree.command(name='embed', description='Creates a custom embeded message')
-# async def update(interaction: discord.Interaction):
-#     roles = [role.name for role in interaction.user.roles]
-#     if await checks.check_roles(roles) == True:
-#         class Questionnaire(ui.Modal, title='Information Required'):
-#             title = ui.TextInput(label='Title')
-#             content = ui.TextInput(label='Description', style=discord.TextStyle.paragraph)
-#             async def on_submit(self, interaction: discord.Interaction):
-#                 embed = await embeds.cembed
-#                 await interaction.response.send_message(embed=embed)
-#                 return
-#         await interaction.response.send_modal(Questionnaire())
-#         return
-#     else:
-#         await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
-#         return 
-
-
 
 @tree.command(name='wiki',description='Get the wiki for the plugins')
 async def wiki(interaction: discord.Interaction):
     roles = [role.name for role in interaction.user.roles]
     if await checks.check_roles(roles) == True:
-        view = SelectView()
+        view = WikiSelectView()
         await interaction.response.send_message("Please select the wiki", view=view)
         return
     else:
-        view = SelectView()
+        view = WikiSelectView()
         await interaction.response.send_message("Please select the wiki", view=view, ephemeral=True)
         return
-class Select(discord.ui.Select):
-    def __init__(self):
-        options=[
-            discord.SelectOption(label="PowerGems"),
-            discord.SelectOption(label="OrePowers"),
-            discord.SelectOption(label="Valocraft"),
-            discord.SelectOption(label="ParkourProject")
-            ]
-        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
-    async def callback(self, interaction: discord.Interaction):
-        print(self.values)
-        if self.values == ['PowerGems']:
-            link = "https://powergems.iseal.dev"
-            name = "PowerGems"
-        elif self.values == ['OrePowers']:
-            # link = "https://orepowers.iseal.dev"
-            link = "Unavailable"
-            name = "OrePowers"
-        elif self.values == ['Valocraft']:
-            # link = "https://valocraft.iseal.dev"
-            link = "Unavailable"
-            name = "Valocraft"
-        elif self.values == ['ParkourProject']:
-            # link = "https://parkourproject.iseal.dev"
-            link = "Unavailable"
-            name = "ParkourProject"
-        else:
-            return
-        roles = [role.name for role in interaction.user.roles]
-        if await checks.check_roles(roles) == True:
-            await interaction.response.edit_message(content=f"Here is the wiki link to {name}: {link}", view=None)
-        else:
-            await interaction.response.send_message(f"Here is the wiki link to {name}: {link}", ephemeral=True)
-class SelectView(discord.ui.View):
-    def __init__(self, *, timeout = 180):
-        super().__init__(timeout=timeout)
-        self.add_item(Select())
 
 @tree.command(name="config", description="Send how to access the config file")
 async def config(interaction: discord.Interaction, plugin_name:str):
@@ -219,6 +337,20 @@ async def faq(interaction: discord.Interaction):
     else:
         await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
         return
+
+@tree.command(name='r', description='sends the selected resource to the current channel')
+async def r(interaction: discord.Interaction):
+    roles = [role.name for role in interaction.user.roles]
+    await interaction.response.send_message("Select the resource you would like", view=ResourceSelectView(), ephemeral=True)
+    return
+
+@tree.command(name='resources', description='sends the selected resource to the current channel')
+async def resources(interaction: discord.Interaction):
+    roles = [role.name for role in interaction.user.roles]
+    await interaction.response.send_message("Select the resource you would like", view=ResourceSelectView(), ephemeral=True)
+    return
+
+# ---------------------- Autocompletes ---------------------- #
 
 @config.autocomplete('plugin_name')
 async def config_id_autocomplete(
@@ -298,6 +430,10 @@ async def stop():
         await client.close()
     else:
         raise RuntimeError("Bot connection is already closed.")
+
+
+
+#---------------------- Run ----------------------#
 
 def run():
     client.run(TOKEN)
