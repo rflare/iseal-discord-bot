@@ -435,5 +435,4 @@ async def stop():
 
 #---------------------- Run ----------------------#
 
-def run():
-    client.run(TOKEN)
+client.run(TOKEN)
