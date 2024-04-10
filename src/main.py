@@ -205,7 +205,8 @@ class PowergemsRecpieSelect(discord.ui.Select):
             return await interaction.response.send_message(content="Failure, contact LunarcatOwO", ephemeral=True)
         roles = [role.name for role in interaction.user.roles]
         if await checks.check_roles(roles) == True:
-            await interaction.response.edit_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), files=file_objects)
+            await interaction.delete_original_response()
+            await interaction.response.send_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), Files=file_objects)
         else:
             await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  Files=file_objects,ephemeral=True)
 class PowergemsRecpieSelectView(discord.ui.View):
