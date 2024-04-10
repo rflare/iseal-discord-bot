@@ -89,9 +89,9 @@ class ResourceSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         print(self.values)
         if self.values == ['Resource Pack']:
-            await interaction.response.edit_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView(), ephemeral=True)
+            await interaction.response.edit_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView())
         elif self.values == ['Recipes']:
-            await interaction.response.edit_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView(), ephemeral=True)
+            await interaction.response.edit_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView())
 class ResourceSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
@@ -115,17 +115,17 @@ class ResourcePackSelect(discord.ui.Select):
             file_objects = []
         elif self.values == ['OrePowers']:
             name = "OrePowers"
-            return interaction.response.edit_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(), ephemeral=True)
+            return interaction.response.edit_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
             file_paths = []
             file_objects = []
         elif self.values == ['Valocraft']:
             name = "Valocraft"
-            return interaction.response.edit_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(), ephemeral=True)
+            return interaction.response.edit_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
             file_paths = []
             file_objects = []
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
-            return interaction.response.edit_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(), ephemeral=True)
+            return interaction.response.edit_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
             file_paths = []
             file_objects = []
         else:
@@ -134,9 +134,9 @@ class ResourcePackSelect(discord.ui.Select):
         for file_path in file_paths:
             file_objects.append(discord.File(file_path))
         if await checks.check_roles(roles) == True:
-            await interaction.response.edit_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, ephemeral=False, files=file_objects)
+            await interaction.response.edit_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, files=file_objects)
         else:
-            await interaction.response.edit_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None, ephemeral=True, Files=file_objects)
+            await interaction.response.edit_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None,  Files=file_objects)
 
 class ResourcePackSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
@@ -156,16 +156,16 @@ class RecpieSelect(discord.ui.Select):
         print(self.values)
         if self.values == ['PowerGems']:
             name = "PowerGems"
-            return interaction.response.edit_message(content="Select one of the following recpies:", ephemeral=True, view=PowergemsRecpieSelectView())
+            return interaction.response.edit_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView())
         elif self.values == ['OrePowers']:
             name = "OrePowers"
-            return interaction.response.edit_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(), ephemeral=True)
+            return interaction.response.edit_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView())
         elif self.values == ['Valocraft']:
             name = "Valocraft"
-            return interaction.response.edit_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(), ephemeral=True)
+            return interaction.response.edit_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView())
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
-            return interaction.response.edit_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView(), ephemeral=True)
+            return interaction.response.edit_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView())
         else:
             return
 
@@ -425,11 +425,6 @@ async def on_message(message): # This event triggers when a message is sent anyw
             await message.channel.join()
             return
 
-async def stop():
-    if not client.is_closed():
-        await client.close()
-    else:
-        raise RuntimeError("Bot connection is already closed.")
 
 
 
