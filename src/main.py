@@ -123,17 +123,17 @@ class ResourcePackSelect(discord.ui.Select):
             file_objects = []
         elif self.values == ['OrePowers']:
             name = "OrePowers"
-            return interaction.response.edit_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
+            return await interaction.response.edit_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
             file_paths = []
             file_objects = []
         elif self.values == ['Valocraft']:
             name = "Valocraft"
-            return interaction.response.edit_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
+            return await interaction.response.edit_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
             file_paths = []
             file_objects = []
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
-            return interaction.response.edit_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
+            return await interaction.response.edit_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
             file_paths = []
             file_objects = []
         else:
@@ -166,19 +166,19 @@ class RecpieSelect(discord.ui.Select):
             name = "PowerGems"
             roles = [role.name for role in interaction.user.roles]
             if await checks.check_roles(roles) == True:
-                interaction.response.edit_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView())
+                await interaction.response.edit_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView())
             else:
-                interaction.response.send_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView(), ephemeral=True)
+                await interaction.response.send_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView(), ephemeral=True)
             return
         elif self.values == ['OrePowers']:
             name = "OrePowers"
-            return interaction.response.send_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
+            return await interaction.response.send_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
         elif self.values == ['Valocraft']:
             name = "Valocraft"
-            return interaction.response.send_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
+            return await interaction.response.send_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
-            return interaction.response.send_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
+            return await interaction.response.send_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
         else:
             return
 
