@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 # ---------------------- Variables ---------------------- #
 load_dotenv()
 
-file1 = discord.File('~/', filename='requirements.txt')
+file1 = discord.File('/requirements.txt', filename='requirements.txt')
 owners = [905758994155589642,398908171357519872]
 plugins =  ['PowerGems', 'OrePowers','Valocraft', 'ParkourProject']
 
@@ -211,7 +211,7 @@ class PowergemsRecpieSelect(discord.ui.Select):
 class PowergemsRecpieSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
-        self.add_item(RecpieSelect())
+        self.add_item(PowergemsRecpieSelect())
 
 class UpdateModal(ui.Modal, title='Information Required'):
     name = ui.TextInput(label='Name of plugin')
