@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 # ---------------------- Variables ---------------------- #
 load_dotenv()
 
+file1 = discord.File('~/', filename='requirements.txt')
 owners = [905758994155589642,398908171357519872]
 plugins =  ['PowerGems', 'OrePowers','Valocraft', 'ParkourProject']
 
@@ -197,17 +198,12 @@ class PowergemsRecpieSelect(discord.ui.Select):
         print(self.values)
         if self.values == ['New-Gem']:
             name = "New Gem"
-            file_paths = ["~/src/recpies/pg_new.png"]
-            file_objects = []
+            file_objects = file1
         elif self.values == ['Upgrade']:
             name = "Upgrade"
-            file_paths = ["~/src/recpies/pg_upgrade.png"]
-            file_objects = []
         else:
             return await interaction.response.send_message(content="Failure, contact LunarcatOwO", ephemeral=True)
         roles = [role.name for role in interaction.user.roles]
-        for file_path in file_paths:
-            file_objects.append(discord.File(file_path))
         if await checks.check_roles(roles) == True:
             await interaction.response.edit_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), files=file_objects)
         else:
@@ -309,7 +305,6 @@ async def rp(interaction: discord.Interaction):
     else:
         await interaction.response.send_message(embed=embed, ephemeral=True)
         return
-
 @tree.command(name='wiki',description='Get the wiki for the plugins')
 async def wiki(interaction: discord.Interaction):
     roles = [role.name for role in interaction.user.roles]
