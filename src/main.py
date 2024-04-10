@@ -163,16 +163,21 @@ class RecpieSelect(discord.ui.Select):
         print(self.values)
         if self.values == ['PowerGems']:
             name = "PowerGems"
-            return interaction.response.edit_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView())
+            roles = [role.name for role in interaction.user.roles]
+            if await checks.check_roles(roles) == True:
+                interaction.response.edit_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView())
+            else:
+                interaction.response.send_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView(), ephemeral=True)
+            return
         elif self.values == ['OrePowers']:
             name = "OrePowers"
-            return interaction.response.edit_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView())
+            return interaction.response.send_message(content="OrePowers does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
         elif self.values == ['Valocraft']:
             name = "Valocraft"
-            return interaction.response.edit_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView())
+            return interaction.response.send_message(content="Valocraft does not have a recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
-            return interaction.response.edit_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView())
+            return interaction.response.send_message(content="ParkourProject does not have any recpies. Try selecting another Plugin.", view=RecpieSelectView(),ephemeral=True)
         else:
             return
 
@@ -204,9 +209,9 @@ class PowergemsRecpieSelect(discord.ui.Select):
         for file_path in file_paths:
             file_objects.append(discord.File(file_path))
         if await checks.check_roles(roles) == True:
-            await interaction.response.edit_message(content=f"Here is the recpie for {name}", view=None, files=file_objects)
+            await interaction.response.edit_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), files=file_objects)
         else:
-            await interaction.response.send_message(f"Here are the recpie for {name}", view=None,  Files=file_objects,ephemeral=True)
+            await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  Files=file_objects,ephemeral=True)
 class PowergemsRecpieSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
