@@ -23,7 +23,7 @@ Keep a friendly tone and try not to swear, a little is allowed, but dont exagera
             color=discord.Color.blue().value,
         )
     embed.set_footer(
-        text="*This bot was made with love by Lunarcat_21*",
+        text="*This bot was made with love by LunarcatOwO*",
         icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
     )
     return embed
@@ -37,7 +37,7 @@ async def unspported_embed(plugin_name, interaction, type):
             color=discord.Color.red().value,
         )
         embed.set_footer(
-            text="*This bot was made with love by Lunarcat_21*",
+            text="*This bot was made with love by LunarcatOwO*",
             icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
         )
         return embed
@@ -51,7 +51,7 @@ async def upgrade_embed(plugin_name, interaction):
         )
         embed.add_field(name="Update Link:", value=link, inline=False),
         embed.set_footer(
-            text="*This bot was made with love by Lunarcat_21*",
+            text="*This bot was made with love by LunarcatOwO*",
             icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
         )
         return embed
@@ -64,7 +64,7 @@ async def format_embed(format_name, interaction):
             color=discord.Color.blue().value,
         )
     embed.set_footer(
-        text="*This bot was made with love by Lunarcat_21*",
+        text="*This bot was made with love by LunarcatOwO*",
         icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
     )
     return embed
@@ -76,7 +76,7 @@ async def resourcepack_embed(resouce_pack, m_resouce_pack):
             color=discord.Color.yellow().value,
         )
     embed.set_footer(
-        text="*This bot was made with love by Lunarcat_21*",
+        text="*This bot was made with love by LunarcatOwO*",
         icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
     )
     return embed
@@ -91,7 +91,7 @@ async def update_embed(name, version, content, interaction):
                 embed.add_field(name="Changes:", value=content, inline=False),
                 embed.add_field(name="Update Link:", value=plink, inline=False),
                 embed.set_footer(
-                    text="*This bot was made with love by Lunarcat_21*",
+                    text="*This bot was made with love by LunarcatOwO*",
                     icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
                 )
                 return embed, role_id
@@ -106,7 +106,7 @@ Then open that file and there should be all the configs for {name}!''',
             color=discord.Color.blue().value,
         )
     embed.set_footer(
-        text="*This bot was made with love by Lunarcat_21*",
+        text="*This bot was made with love by LunarcatOwO*",
         icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
     )
     return embed
@@ -116,7 +116,7 @@ async def faq_embed(interaction):
             title=f"Frequently Asked Question",
             description=f'''Hello! The questions you have asked are frequently asked questions, and the answers are in <#1219165112519233546>! Please visit there before asking questions next time!''')
     embed.set_footer(
-        text="*This bot was made with love by Lunarcat_21*",
+        text="*This bot was made with love by LunarcatOwO*",
         icon_url="https://yt3.googleusercontent.com/XaSpc4tyf4zYIrd3BmMy0Bj9eKk3U5bCQsN3hKySMnQn8Og_xYzxXr4gqeQMOyKGf-AQh8ZZ=s176-c-k-c0x00ffffff-no-rj",
     )
     return embed

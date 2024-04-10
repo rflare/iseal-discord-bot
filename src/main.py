@@ -88,10 +88,17 @@ class ResourceSelect(discord.ui.Select):
         super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
     async def callback(self, interaction: discord.Interaction):
         print(self.values)
+        roles = [role.name for role in interaction.user.roles]
         if self.values == ['Resource Pack']:
-            await interaction.response.edit_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView())
+            if await checks.check_roles(roles) == True:
+                await interaction.response.send_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView(),ephemeral=False)
+            else:
+                await interaction.response.send_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView(),ephemeral=True)
         elif self.values == ['Recipes']:
-            await interaction.response.edit_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView())
+            if await checks.check_roles(roles) == True:
+                await interaction.response.send_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView(),ephemeral=False)
+            else:
+                await interaction.response.send_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView(),ephemeral=True)
 class ResourceSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
@@ -136,7 +143,7 @@ class ResourcePackSelect(discord.ui.Select):
         if await checks.check_roles(roles) == True:
             await interaction.response.edit_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, files=file_objects)
         else:
-            await interaction.response.edit_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None,  Files=file_objects)
+            await interaction.response.send_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None,  Files=file_objects,ephemeral=True)
 
 class ResourcePackSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
@@ -177,39 +184,33 @@ class RecpieSelectView(discord.ui.View):
 class PowergemsRecpieSelect(discord.ui.Select):
     def __init__(self):
         options=[
-            discord.SelectOption(label="New gem"),
-            discord.SelectOption(label="Upgrading a gem"),
-            discord.SelectOption(label="All")
+            discord.SelectOption(label="New-Gem"),
+            discord.SelectOption(label="Upgrade")
             ]
         super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
     async def callback(self, interaction: discord.Interaction):
         print(self.values)
-        if self.values == ['New gem']:
+        if self.values == ['New-Gem']:
             name = "New Gem"
             file_paths = ["~/src/recpies/pg_new.png"]
             file_objects = []
-        elif self.values == ['Upgrading a gem']:
-            name = "Upgrading a gem"
+        elif self.values == ['Upgrade']:
+            name = "Upgrade"
             file_paths = ["~/src/recpies/pg_upgrade.png"]
             file_objects = []
-        elif self.values == ['All']:
-            name = "All"
-            file_paths = ["~/src/recpies/pg_new.png","~/src/recpies/pg_upgrade.png"]
-            file_objects = []
         else:
-            return
+            return await interaction.response.send_message(content="Failure, contact LunarcatOwO", ephemeral=True)
         roles = [role.name for role in interaction.user.roles]
         for file_path in file_paths:
             file_objects.append(discord.File(file_path))
         if await checks.check_roles(roles) == True:
-            await interaction.response.edit_message(content=f"Here is the recpie for {name} PowerGems", view=PowergemsRecpieSelectView(), ephemeral=False, files=file_objects)
+            await interaction.response.edit_message(content=f"Here is the recpie for {name}", view=None, files=file_objects)
         else:
-            await interaction.response.edit_message(f"Here is the recpie for {name} PowerGems",  view=PowergemsRecpieSelectView(), ephemeral=True, Files=file_objects)
-
+            await interaction.response.send_message(f"Here are the recpie for {name}", view=None,  Files=file_objects,ephemeral=True)
 class PowergemsRecpieSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
-        self.add_item(PowergemsRecpieSelect())
+        self.add_item(RecpieSelect())
 
 class UpdateModal(ui.Modal, title='Information Required'):
     name = ui.TextInput(label='Name of plugin')
