@@ -12,7 +12,10 @@ from dotenv import load_dotenv
 # ---------------------- Variables ---------------------- #
 load_dotenv()
 
-file1 = discord.File('requirements.txt')
+file_pg_recpie_new = discord.File('pg_new.png')
+file_pg_recpie_upgrade = discord.File('pg_upgrade.png')
+file_pg_rp_magic = discord.File('PowerGems_magic_pack.zip')
+file_pg_rp_normal = discord.File('Powergems_Pack.zip')
 owners = [905758994155589642,398908171357519872]
 plugins =  ['PowerGems', 'OrePowers','Valocraft', 'ParkourProject']
 
@@ -113,28 +116,22 @@ class ResourcePackSelect(discord.ui.Select):
         print(self.values)
         if self.values == ['PowerGems']:
             name = "PowerGems"
-            file_paths = ["~/src/resource_packs/Powergems_Pack.zip","~/src/resource_packs/PowerGems_magic_pack.zip"]
-            file_objects = []
+            file_objects = [file_pg_rp_normal, file_pg_rp_magic]
         elif self.values == ['OrePowers']:
             name = "OrePowers"
             return await interaction.response.send_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(),ephemeral=True)
-            file_paths = []
             file_objects = []
         elif self.values == ['Valocraft']:
             name = "Valocraft"
             return await interaction.response.send_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(),ephemeral=True)
-            file_paths = []
             file_objects = []
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
             return await interaction.response.send_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(),ephemeral=True)
-            file_paths = []
             file_objects = []
         else:
             return
         roles = [role.name for role in interaction.user.roles]
-        for file_path in file_paths:
-            file_objects.append(discord.File(file_path))
         if await checks.check_roles(roles) == True:
             await interaction.response.send_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, files=file_objects,ephemeral=False)
         else:
@@ -188,16 +185,17 @@ class PowergemsRecpieSelect(discord.ui.Select):
         print(self.values)
         if self.values == ['New-Gem']:
             name = "New Gem"
-            file_objects = file1
+            file_objects = [file_pg_recpie_new]
         elif self.values == ['Upgrade']:
             name = "Upgrade"
+            file_objects = [file_pg_recpie_upgrade]
         else:
             return await interaction.response.send_message(content="Failure, contact LunarcatOwO", ephemeral=True)
         roles = [role.name for role in interaction.user.roles]
         if await checks.check_roles(roles) == True:
-            await interaction.response.send_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), Files=file_objects)
+            await interaction.response.send_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), files=file_objects)
         else:
-            await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  Files=file_objects,ephemeral=True)
+            await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  files=file_objects,ephemeral=True)
 class PowergemsRecpieSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
