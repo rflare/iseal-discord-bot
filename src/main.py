@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 # ---------------------- Variables ---------------------- #
 load_dotenv()
 
-file1 = discord.File('/requirements.txt', filename='requirements.txt')
+file1 = discord.File('requirements.txt')
 owners = [905758994155589642,398908171357519872]
 plugins =  ['PowerGems', 'OrePowers','Valocraft', 'ParkourProject']
 
@@ -91,14 +91,8 @@ class ResourceSelect(discord.ui.Select):
         print(self.values)
         roles = [role.name for role in interaction.user.roles]
         if self.values == ['Resource Pack']:
-            if await checks.check_roles(roles) == True:
-                await interaction.response.send_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView(),ephemeral=False)
-            else:
                 await interaction.response.send_message("Select the plugin that you would like the resource pack for:", view=ResourcePackSelectView(),ephemeral=True)
         elif self.values == ['Recipes']:
-            if await checks.check_roles(roles) == True:
-                await interaction.response.send_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView(),ephemeral=False)
-            else:
                 await interaction.response.send_message("Select the plugin that you would like to view the recipes for:", view=RecpieSelectView(),ephemeral=True)
 class ResourceSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
@@ -123,17 +117,17 @@ class ResourcePackSelect(discord.ui.Select):
             file_objects = []
         elif self.values == ['OrePowers']:
             name = "OrePowers"
-            return await interaction.response.edit_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
+            return await interaction.response.send_message(content="OrePowers does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(),ephemeral=True)
             file_paths = []
             file_objects = []
         elif self.values == ['Valocraft']:
             name = "Valocraft"
-            return await interaction.response.edit_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
+            return await interaction.response.send_message(content="Valocraft does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(),ephemeral=True)
             file_paths = []
             file_objects = []
         elif self.values == ['ParkourProject']:
             name = "ParkourProject"
-            return await interaction.response.edit_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView())
+            return await interaction.response.send_message(content="ParkourProject does not have a resource pack. Try selecting another Plugin.", view=ResourcePackSelectView(),ephemeral=True)
             file_paths = []
             file_objects = []
         else:
@@ -142,7 +136,7 @@ class ResourcePackSelect(discord.ui.Select):
         for file_path in file_paths:
             file_objects.append(discord.File(file_path))
         if await checks.check_roles(roles) == True:
-            await interaction.response.edit_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, files=file_objects)
+            await interaction.response.send_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, files=file_objects,ephemeral=False)
         else:
             await interaction.response.send_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None,  Files=file_objects,ephemeral=True)
 
@@ -164,11 +158,7 @@ class RecpieSelect(discord.ui.Select):
         print(self.values)
         if self.values == ['PowerGems']:
             name = "PowerGems"
-            roles = [role.name for role in interaction.user.roles]
-            if await checks.check_roles(roles) == True:
-                await interaction.response.edit_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView())
-            else:
-                await interaction.response.send_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView(), ephemeral=True)
+            await interaction.response.send_message(content="Select one of the following recpies:", view=PowergemsRecpieSelectView(), ephemeral=True)
             return
         elif self.values == ['OrePowers']:
             name = "OrePowers"
@@ -205,7 +195,6 @@ class PowergemsRecpieSelect(discord.ui.Select):
             return await interaction.response.send_message(content="Failure, contact LunarcatOwO", ephemeral=True)
         roles = [role.name for role in interaction.user.roles]
         if await checks.check_roles(roles) == True:
-            await interaction.delete_original_response()
             await interaction.response.send_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), Files=file_objects)
         else:
             await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  Files=file_objects,ephemeral=True)
