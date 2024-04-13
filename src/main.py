@@ -414,19 +414,4 @@ async def on_message(message): # This event triggers when a message is sent anyw
         if not any(member.id == client.user.id for member in message.channel.members): # If the bot is not in the thread, we join it
             await message.channel.join()
             return
-    if 'https://' in message.content:
-        roles = [role.name for role in message.author.roles]
-        if await checks.check_roles(roles) == True:
-            return
-        else:
-            if isinstance(message.channel, discord.Thread):
-                return
-            else:
-                await message.delete()
-                await message.channel.send("Links are not allowed if you are looking for support create a support ticket or go to bug reports to send the link")
-            with open("antilink-log.json", "r") as f:
-                antilink = json.load(f)
-                antilink[str(message.author)] = message.content + "," + message.channel
-            with open("antilink.json", "w") as f:
-                json.dump(antilink, f, indent=4)
 client.run(TOKEN)
