@@ -341,30 +341,30 @@ async def resources(interaction: discord.Interaction):
     await interaction.response.send_message("Select the resource you would like", view=ResourceSelectView(), ephemeral=True)
     return
 
-@tree.command(name='antilink',description='Toggle the anti link system for this channel')
-async def toggle_link_detection(interaction: discord.Interaction, channel: discord.TextChannel = None):
-    global anti_link
-    channel = channel or interaction.channel # Use specified channel or default to current channel
-    roles = [role.name for role in interaction.user.roles]
-    if await checks.check_roles(roles) == False:
-        await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
-        return
-    else:
-        try:
-            with open("antilink.json", "r") as f:
-                antilink = json.load(f)
-                anti_link = antilink[str(channel.id)]  # Get the channel's value from the JSON
-        except KeyError:
-            antilink[str(channel.id)] = "on"  # If channel toggle isn't in JSON, add it
-        antilink[str(channel.id)] = anti_link
-        with open("antilink.json", "w") as f:
-            json.dump(antilink, f, indent=4)  # Write the changes to the JSON
-        if anti_link == 'on':
-            antilink[str(channel.id)] = "off"
-            await interaction.response.send_message(f"Links now not allowed in {channel.mention}.",ephemeral=True)
-        else:
-            antilink[str(channel.id)] = "on"
-            await interaction.response.send_message(f"Link detection is now enabled in {channel.mention}.",ephemeral=True)
+# @tree.command(name='antilink',description='Toggle the anti link system for this channel')
+# async def toggle_link_detection(interaction: discord.Interaction, channel: discord.TextChannel = None):
+#     global anti_link
+#     channel = channel or interaction.channel # Use specified channel or default to current channel
+#     roles = [role.name for role in interaction.user.roles]
+#     if await checks.check_roles(roles) == False:
+#         await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
+#         return
+#     else:
+#         try:
+#             with open("antilink.json", "r") as f:
+#                 antilink = json.load(f)
+#                 anti_link = antilink[str(channel.id)]  # Get the channel's value from the JSON
+#         except KeyError:
+#             antilink[str(channel.id)] = "on"  # If channel toggle isn't in JSON, add it
+#         antilink[str(channel.id)] = anti_link
+#         with open("antilink.json", "w") as f:
+#             json.dump(antilink, f, indent=4)  # Write the changes to the JSON
+#         if anti_link == 'on':
+#             antilink[str(channel.id)] = "off"
+#             await interaction.response.send_message(f"Links now are not allowed in {channel.mention}.",ephemeral=True)
+#         else:
+#             antilink[str(channel.id)] = "on"
+#             await interaction.response.send_message(f"Link detection is now disabled in {channel.mention}.",ephemeral=True)
 # ---------------------- Autocompletes ---------------------- #
 
 @config.autocomplete('plugin_name')
@@ -431,23 +431,25 @@ async def on_thread_join(thread):
 async def on_message(message): # This event triggers when a message is sent anywhere
     if client.user.mentioned_in(message):
         await message.reply(f"**I am a bot, can not assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **")
-    elif isinstance(message.channel, discord.DMChannel):
+    if isinstance(message.channel, discord.DMChannel):
         if message.author == client.user:
             return
         await message.reply(f"**I am a bot, can not assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **")
-    elif isinstance(message.channel, discord.Thread): # If the message is in a thread, we check if the bot is in it
+    if isinstance(message.channel, discord.Thread): # If the message is in a thread, we check if the bot is in it
         if not any(member.id == client.user.id for member in message.channel.members): # If the bot is not in the thread, we join it
             await message.channel.join()
             return
-    elif 'https://' in message.content:
-        roles = [role.name for role in message.author.roles]
-        if await checks.check_roles(roles) == True:
-            pass
-        else:
-            global anti_link
-            if anti_link == 'on':
-                await message.delete()
-                await message.channel.send("Links are not allowed here.", delete_after=5)
+    # if 'https://' in message.content:
+    #     roles = [role.name for role in message.author.roles]
+    #     if await checks.check_roles(roles) == True:
+    #         return
+    #     else:
+    #         global anti_link
+    #         if anti_link == 'on':
+    #             await message.delete()
+    #             await message.channel.send("Links are not allowed here.")
+    #         else:
+    #             pass
 
 
 client.run(TOKEN)
