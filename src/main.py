@@ -135,7 +135,7 @@ class ResourcePackSelect(discord.ui.Select):
         if await checks.check_roles(roles) == True:
             await interaction.response.send_message(content=f"Here is the resourcespacks for {name}, select one of the following and install it", view=None, files=file_objects,ephemeral=False)
         else:
-            await interaction.response.send_message(f"Here are the resourcepacks for {name}, select one of the following and install it", view=None,  Files=file_objects,ephemeral=True)
+            await interaction.response.send_message(f"Here are the resourcepacks for {name}, select one of the following and install it, this message will delete it self after 30 seconds", view=None,  Files=file_objects, delete_after=30,ephemeral=True)
 
 class ResourcePackSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
@@ -195,7 +195,7 @@ class PowergemsRecpieSelect(discord.ui.Select):
         if await checks.check_roles(roles) == True:
             await interaction.response.send_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), files=file_objects)
         else:
-            await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  files=file_objects,delete_after=5)
+            await interaction.response.send_message(f"Here are the recpie for {name}, this message will delete it self after 30 seconds", view=PowergemsRecpieSelectView(),  files=file_objects,delete_after=30)
 class PowergemsRecpieSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
