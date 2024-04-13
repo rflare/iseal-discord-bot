@@ -341,7 +341,7 @@ async def resources(interaction: discord.Interaction):
     await interaction.response.send_message("Select the resource you would like", view=ResourceSelectView(), ephemeral=True)
     return
 
-@tree.command(name='antilink',description='Toggle the anti link system for thsi channel')
+@tree.command(name='antilink',description='Toggle the anti link system for this channel')
 async def toggle_link_detection(interaction: discord.Interaction, channel: discord.TextChannel = None):
     global anti_link
     channel = channel or interaction.channel # Use specified channel or default to current channel
