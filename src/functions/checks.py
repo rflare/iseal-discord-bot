@@ -5,14 +5,8 @@ pgv = "1.19.4"
 vv = "1.19.4"
 opv = "1.19.4"
 ppv = "1.19.4"
-role1_id = 1157658572423966762
-role2_id = 1228435573635678239
 
-
-
-role1 = discord.Guild.get_role(role1_id)
-role2 = discord.Guild.get_role(role2_id)
-trigger_roles = [role1, role2]
+trigger_roles = ["Iseal", "Commnunity manager"]
 
 
 
