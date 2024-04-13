@@ -18,7 +18,6 @@ file_pg_recpie_new = discord.File('pg_new.png')
 file_pg_recpie_upgrade = discord.File('pg_upgrade.png')
 file_pg_rp_magic = discord.File('PowerGems_magic_pack.zip')
 file_pg_rp_normal = discord.File('Powergems_Pack.zip')
-owners = [905758994155589642,398908171357519872]
 plugins =  ['PowerGems', 'OrePowers','Valocraft', 'ParkourProject']
 
 TOKEN = os.getenv('DISCORD_TOKEN')
