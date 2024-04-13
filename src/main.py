@@ -13,7 +13,6 @@ import json
 # ---------------------- Variables ---------------------- #
 load_dotenv()
 
-anti_link = "off"
 file_pg_recpie_new = discord.File('pg_new.png')
 file_pg_recpie_upgrade = discord.File('pg_upgrade.png')
 file_pg_rp_magic = discord.File('PowerGems_magic_pack.zip')
@@ -196,7 +195,7 @@ class PowergemsRecpieSelect(discord.ui.Select):
         if await checks.check_roles(roles) == True:
             await interaction.response.send_message(content=f"Here is the recpie for {name}", view=PowergemsRecpieSelectView(), files=file_objects)
         else:
-            await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  files=file_objects,ephemeral=True)
+            await interaction.response.send_message(f"Here are the recpie for {name}", view=PowergemsRecpieSelectView(),  files=file_objects,delete_after=5)
 class PowergemsRecpieSelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
@@ -229,7 +228,7 @@ async def rules(interaction: discord.Interaction):
         await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
         return
 
-@tree.command(name='unsupported', description='Sends a message in the current channel, to tell the user to change their server verison/kind', )
+@tree.command(name='unsupported', description='Sends a message in the current channel, to tell the user to change their server verison/kind')
 async def unsupported(interaction: discord.Interaction, plugin_name:str, type:str):
     roles = [role.name for role in interaction.user.roles]
     if await checks.check_roles(roles) == True:
