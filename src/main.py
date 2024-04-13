@@ -8,10 +8,12 @@ import src.functions.checks as checks
 import src.functions.embed_creator as embeds
 import src.functions.threads as threads
 from dotenv import load_dotenv
+import json
 
 # ---------------------- Variables ---------------------- #
 load_dotenv()
 
+anti_link = "off"
 file_pg_recpie_new = discord.File('pg_new.png')
 file_pg_recpie_upgrade = discord.File('pg_upgrade.png')
 file_pg_rp_magic = discord.File('PowerGems_magic_pack.zip')
@@ -339,6 +341,28 @@ async def resources(interaction: discord.Interaction):
     await interaction.response.send_message("Select the resource you would like", view=ResourceSelectView(), ephemeral=True)
     return
 
+@tree.command(name='antilink',description='Toggle the anti link system for thsi channel')
+async def toggle_link_detection(interaction: discord.Interaction, channel: discord.TextChannel = None):
+    global anti_link
+    channel = channel or interaction.channel # Use specified channel or default to current channel
+    roles = [role.name for role in interaction.user.roles]
+    if await checks.check_roles(roles) == False:
+        await interaction.response.send_message("You do not have the permission to trigger this command", ephemeral=True)
+        return
+    else:
+        try:
+            with open("antilink.json", "r") as f:
+                antilink = json.load(f)
+                anti_link = antilink[str(channel.id)]  # Get the channel's value from the JSON
+        except KeyError:
+            antilink[str(channel.id)] = "on"  # If channel toggle isn't in JSON, add it
+        antilink[str(channel.id)] = anti_link
+        with open("antilink.json", "w") as f:
+            json.dump(antilink, f, indent=4)  # Write the changes to the JSON
+        if anti_link == 'on':
+            await interaction.response.send_message(f"Links now are not allowed in {channel.mention}.",ephemeral=True)
+        else:
+            await interaction.response.send_message(f"Link detection is now disabled in {channel.mention}.",ephemeral=True)
 # ---------------------- Autocompletes ---------------------- #
 
 @config.autocomplete('plugin_name')
@@ -413,11 +437,17 @@ async def on_message(message): # This event triggers when a message is sent anyw
         if not any(member.id == client.user.id for member in message.channel.members): # If the bot is not in the thread, we join it
             await message.channel.join()
             return
+    if 'https://' in message.content:
+        roles = [role.name for role in message.author.roles]
+        if await checks.check_roles(roles) == True:
+            return
+        else:
+            global anti_link
+            if anti_link == 'on':
+                await message.delete()
+                await message.channel.send("Links are not allowed here.")
+            else:
+                pass
 
-async def stop():
-    if not client.is_closed():
-        await client.close()
-    else:
-        raise RuntimeError("Bot connection is already closed.")
 
 client.run(TOKEN)
