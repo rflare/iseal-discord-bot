@@ -360,9 +360,11 @@ async def toggle_link_detection(interaction: discord.Interaction, channel: disco
         with open("antilink.json", "w") as f:
             json.dump(antilink, f, indent=4)  # Write the changes to the JSON
         if anti_link == 'on':
-            await interaction.response.send_message(f"Links now are not allowed in {channel.mention}.",ephemeral=True)
+            antilink[str(channel.id)] = "off"
+            await interaction.response.send_message(f"Links now not allowed in {channel.mention}.",ephemeral=True)
         else:
-            await interaction.response.send_message(f"Link detection is now disabled in {channel.mention}.",ephemeral=True)
+            antilink[str(channel.id)] = "on"
+            await interaction.response.send_message(f"Link detection is now enabled in {channel.mention}.",ephemeral=True)
 # ---------------------- Autocompletes ---------------------- #
 
 @config.autocomplete('plugin_name')
