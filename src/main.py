@@ -431,25 +431,23 @@ async def on_thread_join(thread):
 async def on_message(message): # This event triggers when a message is sent anywhere
     if client.user.mentioned_in(message):
         await message.reply(f"**I am a bot, can not assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **")
-    if isinstance(message.channel, discord.DMChannel):
+    elif isinstance(message.channel, discord.DMChannel):
         if message.author == client.user:
             return
         await message.reply(f"**I am a bot, can not assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **")
-    if isinstance(message.channel, discord.Thread): # If the message is in a thread, we check if the bot is in it
+    elif isinstance(message.channel, discord.Thread): # If the message is in a thread, we check if the bot is in it
         if not any(member.id == client.user.id for member in message.channel.members): # If the bot is not in the thread, we join it
             await message.channel.join()
             return
-    if 'https://' in message.content:
+    elif 'https://' in message.content:
         roles = [role.name for role in message.author.roles]
         if await checks.check_roles(roles) == True:
-            return
+            pass
         else:
             global anti_link
             if anti_link == 'on':
                 await message.delete()
-                await message.channel.send("Links are not allowed here.")
-            else:
-                pass
+                await message.channel.send("Links are not allowed here.", delete_after=5)
 
 
 client.run(TOKEN)
