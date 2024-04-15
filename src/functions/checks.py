@@ -6,7 +6,7 @@ vv = "1.19.4"
 opv = "1.19.4"
 ppv = "1.19.4"
 
-trigger_roles = ["Iseal", "Community manager"]
+trigger_roles = ["ISeal", "Community manager"]
 
 
 
