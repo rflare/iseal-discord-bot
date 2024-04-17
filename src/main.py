@@ -6,7 +6,7 @@ import datetime
 import os
 import src.functions.checks as checks
 import src.functions.embed_creator as embeds
-import src.functions.threads as threads
+import src.functions.auto_messages as auto_messages
 from dotenv import load_dotenv
 import json
 
@@ -398,7 +398,7 @@ async def format_id_autocomplete(
 
 @client.event
 async def on_thread_join(thread):
-    await threads.join_thread(thread)
+    await auto_messages.join_thread(thread)
     
 
 @client.event
@@ -413,4 +413,10 @@ async def on_message(message): # This event triggers when a message is sent anyw
         if not any(member.id == client.user.id for member in message.channel.members): # If the bot is not in the thread, we join it
             await message.channel.join()
             return
+        
+@client.event
+async def on_member_join(member):
+    await auto_messages.welcome(member)
+
+
 client.run(TOKEN)
