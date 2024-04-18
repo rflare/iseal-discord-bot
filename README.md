@@ -1,1 +1,1 @@
-Use the code at your own Risk, If you would like a custom one made by me send me a friend request on discord "LunarcatOwO", and I'll get back to you as soon as I can.
+This bot was made for "iseal" on discord to help with their minecraft plugins discord server, use the code at YOUR OWN RISK, I'll not be providing any support, If you would like a custom one made by me send me a friend request on discord "LunarcatOwO", and I'll get back to you as soon as I can!
