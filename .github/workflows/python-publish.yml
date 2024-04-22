@@ -3,7 +3,8 @@ name: Release
 on:
   push:
     branches:
-      - main  # replace 'main' with the name of your branch
+      - main
+      - develop
 
 jobs:
   build:
