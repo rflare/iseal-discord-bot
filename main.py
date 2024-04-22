@@ -47,7 +47,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 with open('config.json') as config_file:
     config = json.load(config_file)
 
-VERSION = config['version']
+VERSION = "2.0.0"
 
 #defining the client
 class aclient(discord.Client):
