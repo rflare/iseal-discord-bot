@@ -17,19 +17,11 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python -
-
-    - name: Install dependencies
-      run: |
-        poetry install
-
-    - name: Get version
+    
+    - name: Getting the current version
       id: get_version
       run: |
-        echo ::set-output name=VERSION::$(poetry version | awk '{print $2}')
+        echo "VERSION::$(grep 'VERSION = ' main.py | cut -d '"' -f 2)" >> $GITHUB_OUTPUT
 
     - name: Create Release
       id: create_release
@@ -40,4 +32,4 @@ jobs:
         tag_name: ${{ github.ref_name }}-${{ steps.get_version.outputs.VERSION }}
         release_name: Release ${{ github.ref_name }}-${{ steps.get_version.outputs.VERSION }}
         draft: false
-        prerelease: false
+        prerelease: true

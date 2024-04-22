@@ -1,0 +1,5 @@
+{
+    "version": "2.0.0",
+    "status_message": "for /help",
+    "trigger_roles": ["ISeal", "Community manager"]
+  }
