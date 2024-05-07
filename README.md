@@ -1,1 +1,0 @@
-This bot was made for "iseal" on Discord to help with their Minecraft plugins. USE THE CODE AT YOUR OWN RISK; I'll not provide any support (and as stated in the LICENSE I'll also not provide any warranty). If you would like a custom one made by me, send me a friend request on Discord username "LunarcatOwO" and I'll get back to you as soon as I can!
