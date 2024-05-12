@@ -33,6 +33,7 @@ import { config } from "dotenv";
 config();
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
+const KEY = process.env.KEY;
 
 const commands = [
   {
@@ -54,6 +55,32 @@ const commands = [
   {
     name: "config",
     description: "Get how to acess the config file",
+  },
+  {
+    name: "wiki",
+    description: "Get the wiki link",
+    options:[
+      {
+        name: "powergems",
+        description: "Get the wiki link for powergems",
+        type:1
+      },
+      {
+        name: "orepowers",
+        description: "Get the wiki link for orepowers (wiki coming if the plugin reaches 2k downloads)",
+        type:1
+      },
+      {
+        name: "valocraft",
+        description: "Get the wiki link for valocraft (wiki coming if the plugin reaches 2k downloads)",
+        type:1
+      },
+      {
+        name: "parkourproject",
+        description: "Get the wiki link for parkourproject (wiki coming if the plugin reaches 2k downloads)",
+        type:1
+      }
+    ]
   },
 ];
 
@@ -103,7 +130,7 @@ client.on("interactionCreate", async (interaction) => {
       .setFooter({
         text: "Made with ❤️ by lunarcatowo",
         iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     if (!interaction.guild) {
       await interaction.reply({ embeds: [embed] });
@@ -135,7 +162,7 @@ client.on("interactionCreate", async (interaction) => {
       .setFooter({
         text: "Made with ❤️ by lunarcatowo",
         iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     const roleNamesToCheck = ["ISeal", "Community Manager"];
     const member =
@@ -162,7 +189,7 @@ client.on("interactionCreate", async (interaction) => {
       .setFooter({
         text: "Made with ❤️ by lunarcatowo",
         iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     if (!interaction.guild) {
       await interaction.reply({ embeds: [embed] });
@@ -216,7 +243,7 @@ client.on("interactionCreate", async (interaction) => {
       .setFooter({
         text: "Made with ❤️ by lunarcatowo",
         iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     if (!interaction.guild) {
       await interaction.reply({ embeds: [embed] });
@@ -265,7 +292,7 @@ client.on("interactionCreate", async (interaction) => {
       .setFooter({
         text: "Made with ❤️ by lunarcatowo",
         iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
       if (!interaction.guild) {
         await interaction.reply({ embeds: [embed] });
@@ -284,6 +311,117 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.reply({ embeds: [embed], ephemeral: true });
       }
   }
+  if (interaction.commandName === "wiki") {
+    const subcommand = interaction.options.getSubcommand();
+    if (subcommand === "powergems") {
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("Link to PowerGems wiki")
+        .setDescription("[Click me](https://powergems.iseal.dev) for Powergems wiki")
+        .setFooter({
+          text: "Made with ❤️ by lunarcatowo",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+        if (!interaction.guild) {
+          await interaction.reply({ embeds: [embed] });
+          return;
+        }
+        const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+        const roleNamesToCheck = ["ISeal", "Community Manager"];
+        const hasRole = member.roles.cache.some((role) =>
+          roleNamesToCheck.includes(role.name)
+        );
+        if (hasRole) {
+          await interaction.reply({ embeds: [embed] });
+        } else {
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+      }
+    if (subcommand === "orepowers") {
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("Link to OrePowers wiki")
+        .setDescription("Coming soon (if the plugin hits 2k downloads)")
+        .setFooter({
+          text: "Made with ❤️ by lunarcatowo",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+        if (!interaction.guild) {
+          await interaction.reply({ embeds: [embed] });
+          return;
+        }
+        const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+        const roleNamesToCheck = ["ISeal", "Community Manager"];
+        const hasRole = member.roles.cache.some((role) =>
+          roleNamesToCheck.includes(role.name)
+        );
+        if (hasRole) {
+          await interaction.reply({ embeds: [embed] });
+        } else {
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+      }
+    if (subcommand === "valocraft") {
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("Link to Valocraft wiki")
+        .setDescription("Coming soon (if the plugin hits 2k downloads)")
+        .setFooter({
+          text: "Made with ❤️ by lunarcatowo",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+        if (!interaction.guild) {
+          await interaction.reply({ embeds: [embed] });
+          return;
+        }
+        const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+        const roleNamesToCheck = ["ISeal", "Community Manager"];
+        const hasRole = member.roles.cache.some((role) =>
+          roleNamesToCheck.includes(role.name)
+        );
+        if (hasRole) {
+          await interaction.reply({ embeds: [embed] });
+        } else {
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+      }
+    if (subcommand === "parkourproject") {
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("Link to ParkourProject wiki")
+        .setDescription("Coming soon (if the plugin hits 2k downloads)")
+        .setFooter({
+          text: "Made with ❤️ by lunarcatowo",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+        if (!interaction.guild) {
+          await interaction.reply({ embeds: [embed] });
+          return;
+        }
+        const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+        const roleNamesToCheck = ["ISeal", "Community Manager"];
+        const hasRole = member.roles.cache.some((role) =>
+          roleNamesToCheck.includes(role.name)
+        );
+        if (hasRole) {
+          await interaction.reply({ embeds: [embed] });
+        } else {
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+      }
+  }
 });
 
 client.on("threadCreate", async (thread) => {
@@ -298,7 +436,7 @@ client.on("threadCreate", async (thread) => {
     .setFooter({
       text: "Made with ❤️ by lunarcatowo",
       iconURL:
-        "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+        "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
     });
   await thread.send({ embeds: [embed] });
   await thread.send({ content: "<@905758994155589642> <@398908171357519872>" });
@@ -331,7 +469,7 @@ client.on("guildMemberAdd", async (member) => {
       .setFooter({
         text: "Made with ❤️ by lunarcatowo",
         iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/c6784ea84cd89d2ec67688b97f04c922?size=1024&f=.png",
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     await member.user.send({ embed: [embed] });
   } catch (error) {
