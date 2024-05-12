@@ -54,33 +54,36 @@ const commands = [
   },
   {
     name: "config",
-    description: "Get how to acess the config file",
+    description: "Get how to access the config file",
   },
   {
     name: "wiki",
     description: "Get the wiki link",
-    options:[
+    options: [
       {
         name: "powergems",
         description: "Get the wiki link for powergems",
-        type:1
+        type: 1,
       },
       {
         name: "orepowers",
-        description: "Get the wiki link for orepowers (wiki coming if the plugin reaches 2k downloads)",
-        type:1
+        description:
+          "Get the wiki link for orepowers (wiki coming if the plugin reaches 2k downloads)",
+        type: 1,
       },
       {
         name: "valocraft",
-        description: "Get the wiki link for valocraft (wiki coming if the plugin reaches 2k downloads)",
-        type:1
+        description:
+          "Get the wiki link for valocraft (wiki coming if the plugin reaches 2k downloads)",
+        type: 1,
       },
       {
         name: "parkourproject",
-        description: "Get the wiki link for parkourproject (wiki coming if the plugin reaches 2k downloads)",
-        type:1
-      }
-    ]
+        description:
+          "Get the wiki link for parkourproject (wiki coming if the plugin reaches 2k downloads)",
+        type: 1,
+      },
+    ],
   },
 ];
 
@@ -124,7 +127,17 @@ client.on("interactionCreate", async (interaction) => {
           value: "Sends the resourcepack download links",
           inline: true,
         },
-        { name: "/rules", value: "Get the server's rules", inline: true }
+        { name: "/rules", value: "Get the server's rules", inline: true },
+        {
+          name: "/config",
+          value: "Get how to access the config files for your plugins",
+          inline: true,
+        },
+        {
+          name: "/wiki <name>",
+          value: "Get the wiki link for the plugin you want to know about",
+          inline: true,
+        }
       )
       .setTimestamp()
       .setFooter({
@@ -196,8 +209,8 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
     const member =
-    interaction.member ||
-    (await interaction.guild.members.fetch(interaction.user.id));
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
     const roleNamesToCheck = ["ISeal", "Community Manager"];
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
@@ -212,7 +225,7 @@ client.on("interactionCreate", async (interaction) => {
     const embed = new EmbedBuilder()
       .setColor("#00ff00")
       .setTitle("Rules for the server")
-      .setDescription("")
+      .setDescription("Read the following carefully!")
       .addFields(
         {
           name: "1️⃣ Spam!",
@@ -250,8 +263,8 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
     const member =
-    interaction.member ||
-    (await interaction.guild.members.fetch(interaction.user.id));
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
     const roleNamesToCheck = ["ISeal", "Community Manager"];
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
@@ -263,7 +276,6 @@ client.on("interactionCreate", async (interaction) => {
     }
   }
   if (interaction.commandName === "config") {
-    
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
       .setTitle("How to access the config file")
@@ -279,7 +291,8 @@ client.on("interactionCreate", async (interaction) => {
         { name: "Step 2", value: "Open the `~/plugins` folder", inline: true },
         {
           name: "Step 3",
-          value: "Open the folder with the plugin's name. example of the route: `~/plugins/PowerGems`",
+          value:
+            "Open the folder with the plugin's name. example of the route: `~/plugins/PowerGems`",
           inline: true,
         },
         {
@@ -294,13 +307,44 @@ client.on("interactionCreate", async (interaction) => {
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
+    if (!interaction.guild) {
+      await interaction.reply({ embeds: [embed] });
+      return;
+    }
+    const member =
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
+    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      await interaction.reply({ embeds: [embed] });
+    } else {
+      await interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+  }
+  if (interaction.commandName === "wiki") {
+    const subcommand = interaction.options.getSubcommand();
+    if (subcommand === "powergems") {
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("Link to PowerGems wiki")
+        .setDescription(
+          "[Click me](https://powergems.iseal.dev) for Powergems wiki"
+        )
+        .setFooter({
+          text: "Made with ❤️ by lunarcatowo",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
       if (!interaction.guild) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
       const member =
-      interaction.member ||
-      (await interaction.guild.members.fetch(interaction.user.id));
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
       const roleNamesToCheck = ["ISeal", "Community Manager"];
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
@@ -310,36 +354,7 @@ client.on("interactionCreate", async (interaction) => {
       } else {
         await interaction.reply({ embeds: [embed], ephemeral: true });
       }
-  }
-  if (interaction.commandName === "wiki") {
-    const subcommand = interaction.options.getSubcommand();
-    if (subcommand === "powergems") {
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("Link to PowerGems wiki")
-        .setDescription("[Click me](https://powergems.iseal.dev) for Powergems wiki")
-        .setFooter({
-          text: "Made with ❤️ by lunarcatowo",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = ["ISeal", "Community Manager"];
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
+    }
     if (subcommand === "orepowers") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
@@ -350,23 +365,23 @@ client.on("interactionCreate", async (interaction) => {
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
+      if (!interaction.guild) {
+        await interaction.reply({ embeds: [embed] });
+        return;
+      }
+      const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = ["ISeal", "Community Manager"];
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
+      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const hasRole = member.roles.cache.some((role) =>
+        roleNamesToCheck.includes(role.name)
+      );
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
       }
+    }
     if (subcommand === "valocraft") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
@@ -377,23 +392,23 @@ client.on("interactionCreate", async (interaction) => {
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
+      if (!interaction.guild) {
+        await interaction.reply({ embeds: [embed] });
+        return;
+      }
+      const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = ["ISeal", "Community Manager"];
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
+      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const hasRole = member.roles.cache.some((role) =>
+        roleNamesToCheck.includes(role.name)
+      );
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
       }
+    }
     if (subcommand === "parkourproject") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
@@ -404,23 +419,23 @@ client.on("interactionCreate", async (interaction) => {
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
+      if (!interaction.guild) {
+        await interaction.reply({ embeds: [embed] });
+        return;
+      }
+      const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = ["ISeal", "Community Manager"];
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
+      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const hasRole = member.roles.cache.some((role) =>
+        roleNamesToCheck.includes(role.name)
+      );
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
       }
+    }
   }
 });
 
