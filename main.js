@@ -85,6 +85,10 @@ const commands = [
       },
     ],
   },
+  {
+    name: "download",
+    description: "Get the latest download link",
+  },
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
@@ -108,6 +112,37 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
   ],
 });
+
+async function getLatestReleaseAsset(owner, repo) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases/latest`
+    );
+    const release = await response.json();
+    const asset = release.assets[0]; // Assuming you want the first asset
+    const downloadUrl = asset.browser_download_url;
+    console.log(downloadUrl);
+    return downloadUrl;
+  } catch (error) {
+    console.error("Error fetching release data:", error);
+    console.log("Giving user Default spigot download link...");
+    let downloadUrl;
+    if (repo === "Powergems") {
+      downloadUrl =
+        "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
+    } else if (repo == "OrePowers") {
+      downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
+    } else if (repo == "Valocraft") {
+      downloadUrl =
+        "https://www.spigotmc.org/resources/1-19-4-1-20-x-valocraft.115131/";
+    } else if (repo == "ParkourProject") {
+      downloadUrl =
+        "https://www.spigotmc.org/resources/1-20-x-1-19-4-parkourproject.115478/";
+    }
+    console.log(downloadUrl);
+    return downloadUrl;
+  }
+}
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -137,11 +172,16 @@ client.on("interactionCreate", async (interaction) => {
           name: "/wiki <name>",
           value: "Get the wiki link for the plugin you want to know about",
           inline: true,
+        },
+        {
+          name: "/download",
+          value: "Get the latest download link for the plugins",
+          inline: true,
         }
       )
       .setTimestamp()
       .setFooter({
-        text: "Made with ❤️ by lunarcatowo",
+        text: "Made with ❤️ by LunarcatOwO",
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
@@ -173,7 +213,7 @@ client.on("interactionCreate", async (interaction) => {
       )
       .setTimestamp()
       .setFooter({
-        text: "Made with ❤️ by lunarcatowo",
+        text: "Made with ❤️ by LunarcatOwO",
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
@@ -200,7 +240,7 @@ client.on("interactionCreate", async (interaction) => {
       )
       .setTimestamp()
       .setFooter({
-        text: "Made with ❤️ by lunarcatowo",
+        text: "Made with ❤️ by LunarcatOwO",
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
@@ -254,7 +294,7 @@ client.on("interactionCreate", async (interaction) => {
       )
       .setTimestamp()
       .setFooter({
-        text: "Made with ❤️ by lunarcatowo",
+        text: "Made with ❤️ by LunarcatOwO",
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
@@ -303,7 +343,7 @@ client.on("interactionCreate", async (interaction) => {
       )
       .setTimestamp()
       .setFooter({
-        text: "Made with ❤️ by lunarcatowo",
+        text: "Made with ❤️ by LunarcatOwO",
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
@@ -330,11 +370,12 @@ client.on("interactionCreate", async (interaction) => {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
         .setTitle("Link to PowerGems wiki")
+        .setTimestamp()
         .setDescription(
           "[Click me](https://powergems.iseal.dev) for Powergems wiki"
         )
         .setFooter({
-          text: "Made with ❤️ by lunarcatowo",
+          text: "Made with ❤️ by LunarcatOwO",
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
@@ -360,8 +401,9 @@ client.on("interactionCreate", async (interaction) => {
         .setColor("#0099ff")
         .setTitle("Link to OrePowers wiki")
         .setDescription("Coming soon (if the plugin hits 2k downloads)")
+        .setTimestamp()
         .setFooter({
-          text: "Made with ❤️ by lunarcatowo",
+          text: "Made with ❤️ by LunarcatOwO",
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
@@ -387,8 +429,9 @@ client.on("interactionCreate", async (interaction) => {
         .setColor("#0099ff")
         .setTitle("Link to Valocraft wiki")
         .setDescription("Coming soon (if the plugin hits 2k downloads)")
+        .setTimestamp()
         .setFooter({
-          text: "Made with ❤️ by lunarcatowo",
+          text: "Made with ❤️ by LunarcatOwO",
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
@@ -414,8 +457,9 @@ client.on("interactionCreate", async (interaction) => {
         .setColor("#0099ff")
         .setTitle("Link to ParkourProject wiki")
         .setDescription("Coming soon (if the plugin hits 2k downloads)")
+        .setTimestamp()
         .setFooter({
-          text: "Made with ❤️ by lunarcatowo",
+          text: "Made with ❤️ by LunarcatOwO",
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
@@ -437,6 +481,55 @@ client.on("interactionCreate", async (interaction) => {
       }
     }
   }
+  if (interaction.commandName === "download") {
+    const PGdownloadLink = await getLatestReleaseAsset(
+      "ISeal-plugin-developement",
+      "PowerGems"
+    );
+    const OPdownloadLink = await getLatestReleaseAsset(
+      "ISeal-plugin-developement",
+      "OrePowers"
+    );
+    const VCdownloadLink = await getLatestReleaseAsset(
+      "ISeal-plugin-developement",
+      "Valocraft"
+    );
+    const PPdownloadLink = await getLatestReleaseAsset(
+      "ISeal-plugin-developement",
+      "ParkourProject"
+    );
+    const embed = new EmbedBuilder()
+      .setColor("#0099ff")
+      .setTitle("Download Link for the plugins!")
+      .setDescription(
+        `[Click me to download PowerGems](${PGdownloadLink})
+[Click me to download OrePowers](${OPdownloadLink})
+[Click me to download Valocraft](${VCdownloadLink})
+[Click me to download ParkourProject](${PPdownloadLink})`
+      )
+      .setTimestamp()
+      .setFooter({
+        text: "Made with ❤️ by LunarcatOwO",
+        iconURL:
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+      });
+    if (!interaction.guild) {
+      await interaction.reply({ embeds: [embed] });
+      return;
+    }
+    const member =
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
+    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      await interaction.reply({ embeds: [embed] });
+    } else {
+      await interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+  }
 });
 
 client.on("threadCreate", async (thread) => {
@@ -449,7 +542,7 @@ client.on("threadCreate", async (thread) => {
     )
     .setTimestamp()
     .setFooter({
-      text: "Made with ❤️ by lunarcatowo",
+      text: "Made with ❤️ by LunarcatOwO",
       iconURL:
         "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
     });
@@ -479,10 +572,9 @@ client.on("guildMemberAdd", async (member) => {
       .setDescription(
         "Welcome to the server! if you are looking for the resource pack then run /resourcepack or /resources and it will automatically help you with that. Again welcome to the server and if you have any questions then just ask!"
       )
-
       .setTimestamp()
       .setFooter({
-        text: "Made with ❤️ by lunarcatowo",
+        text: "Made with ❤️ by LunarcatOwO",
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
