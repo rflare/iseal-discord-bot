@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import {
   Client,
   GatewayIntentBits,
@@ -102,15 +101,20 @@ const commands = [
       {
         name: "bug",
         description: "Get how to format your bug reports",
-        type: 1
+        type: 1,
       },
       {
         name: "suggestion",
         description: "Get how to format your suggestions",
-        type: 1
-      }
-    ]
-  }
+        type: 1,
+      },
+    ],
+  },
+  {
+    name: "botgithub",
+    description:
+      "Get the github link to the bot's code to report issues and give suggestions!",
+  },
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
@@ -203,8 +207,14 @@ client.on("interactionCreate", async (interaction) => {
         },
         {
           name: "/format <type>",
-          value: "Get how to format your bug report or suggestions (for the plugins)",
-          inline: true
+          value:
+            "Get how to format your bug report or suggestions (for the plugins)",
+          inline: true,
+        },
+        {
+          name: "/botgithub",
+          value:
+            "Get the github link to the bot's code to report issues and give suggestions!",
         }
       )
       .setTimestamp()
@@ -589,7 +599,7 @@ client.on("interactionCreate", async (interaction) => {
 
     modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
     if (!interaction.guild) {
-      await interaction.reply({ content: "What are you thinking..."});
+      await interaction.reply({ content: "What are you thinking..." });
       return;
     }
     const member =
@@ -602,16 +612,21 @@ client.on("interactionCreate", async (interaction) => {
     if (hasRole) {
       await interaction.showModal(modal);
     } else {
-      await interaction.reply({ content: "What are you trying to do...", ephemeral: true});
+      await interaction.reply({
+        content: "What are you trying to do...",
+        ephemeral: true,
+      });
     }
   }
-  if (interaction.commandName === "format"){
+  if (interaction.commandName === "format") {
     const subcommand = interaction.options.getSubcommand();
-    if (subcommand === "bug"){
+    if (subcommand === "bug") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
         .setTitle("How to format your bug report")
-        .setDescription("Please follow the following format to format your bug report")
+        .setDescription(
+          "Please follow the following format to format your bug report"
+        )
         .addFields(
           {
             name: "General information",
@@ -622,7 +637,7 @@ Plugins on the server`,
           },
           {
             name: "Plugin information",
-            value:`Plugin:
+            value: `Plugin:
 Plugin version:
 Errors in console: (if applicable, preferably using https://mclo.gs/)`,
           },
@@ -639,41 +654,89 @@ Things tried:`,
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = ["ISeal", "Community Manager"];
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
+      if (!interaction.guild) {
+        await interaction.reply({ embeds: [embed] });
+        return;
+      }
+      const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const hasRole = member.roles.cache.some((role) =>
+        roleNamesToCheck.includes(role.name)
+      );
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
     }
-    if (subcommand === "suggestion"){
+    if (subcommand === "suggestion") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
         .setTitle("How to format your suggestion")
-        .setDescription("Please follow the following steps to format your suggestion")
-        .addFields(
-          {
-            name: "Step 1",
-            value: "Go to the <#1157664317932584970> channel",
-            inline: true
-          },
-          {
-            name: "Step 2",
-            value: "Click on the `💡` reaction",
-            inline: true
-          },
-          {
-            name: "Step 3",
+        .setDescription(
+          "Please follow the following format to format your suggestion"
+        )
+        .addFields({
+          name: "Information needed",
+          value: `Plugin Name:
+What to add:
+How it is currently (If applicable):
+Why it should be added:
+Extra Notes (If applicable):`,
+          inline: true,
+        });
+      if (!interaction.guild) {
+        await interaction.reply({ embeds: [embed] });
+        return;
+      }
+      const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const hasRole = member.roles.cache.some((role) =>
+        roleNamesToCheck.includes(role.name)
+      );
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
+    }
+  }
+  if (interaction.commandName === "botgithub") {
+    if (!interaction.guild) {
+      await interaction.reply({
+        content: `Thank you for being intrested in the bot! 
+[Github](https://github.com/LunarcatOwO/iseal-discord-bot)
+[Support me!](https://ko-fi.com/lunarcatOwO)`,
+        ephemeral: true,
+      });
+      return;
+    }
+    const member =
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
+    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      await interaction.reply({
+        content: `Thank you for being intrested in the bot! 
+[Github](https://github.com/LunarcatOwO/iseal-discord-bot)
+[Support me!](https://ko-fi.com/lunarcatOwO)`,
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: `Thank you for being intrested in the bot! 
+[Github](https://github.com/LunarcatOwO/iseal-discord-bot)
+[Support me!](https://ko-fi.com/lunarcatOwO)`,
+        ephemeral: true,
+      });
+    }
   }
 });
 
@@ -682,7 +745,9 @@ client.on("interactionCreate", async (interaction) => {
 
   if (interaction.customId === "updateModal") {
     if (!interaction.guild) {
-      await interaction.reply({ content: "How did you even trigger this message... "});
+      await interaction.reply({
+        content: "How did you even trigger this message... ",
+      });
       return;
     }
     const pluginID = interaction.fields.getTextInputValue("pluginIDinput");
@@ -728,7 +793,7 @@ client.on("interactionCreate", async (interaction) => {
       roleNamesToCheck.includes(role.name)
     );
     if (hasRole) {
-      await interaction.reply({ content:`<@&${roleid}>`, embeds: [embed] });
+      await interaction.reply({ content: `<@&${roleid}>`, embeds: [embed] });
     } else {
       await interaction.reply({ embeds: [embed], ephemeral: true });
     }
