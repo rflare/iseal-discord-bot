@@ -95,6 +95,22 @@ const commands = [
     name: "update",
     description: "Sends out a message for plugin updates (ADMIN ONLY)",
   },
+  {
+    name: "format",
+    description: "Get how to format your bug reports or suggestions",
+    options: [
+      {
+        name: "bug",
+        description: "Get how to format your bug reports",
+        type: 1
+      },
+      {
+        name: "suggestion",
+        description: "Get how to format your suggestions",
+        type: 1
+      }
+    ]
+  }
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
@@ -184,6 +200,11 @@ client.on("interactionCreate", async (interaction) => {
           name: "/download",
           value: "Get the latest download link for the plugins",
           inline: true,
+        },
+        {
+          name: "/format <type>",
+          value: "Get how to format your bug report or suggestions (for the plugins)",
+          inline: true
         }
       )
       .setTimestamp()
@@ -567,7 +588,92 @@ client.on("interactionCreate", async (interaction) => {
     );
 
     modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
-    await interaction.showModal(modal);
+    if (!interaction.guild) {
+      await interaction.reply({ content: "What are you thinking..."});
+      return;
+    }
+    const member =
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
+    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      await interaction.showModal(modal);
+    } else {
+      await interaction.reply({ content: "What are you trying to do...", ephemeral: true});
+    }
+  }
+  if (interaction.commandName === "format"){
+    const subcommand = interaction.options.getSubcommand();
+    if (subcommand === "bug"){
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("How to format your bug report")
+        .setDescription("Please follow the following format to format your bug report")
+        .addFields(
+          {
+            name: "General information",
+            value: `Server software:
+Server version:
+Software build: (if applicable)
+Plugins on the server`,
+          },
+          {
+            name: "Plugin information",
+            value:`Plugin:
+Plugin version:
+Errors in console: (if applicable, preferably using https://mclo.gs/)`,
+          },
+          {
+            name: "Bug information:",
+            value: `Expected result:
+Actual result:
+Things tried:`,
+          }
+        )
+        .setTimestamp()
+        .setFooter({
+          text: "Made with ❤️ by LunarcatOwO",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+        if (!interaction.guild) {
+          await interaction.reply({ embeds: [embed] });
+          return;
+        }
+        const member =
+          interaction.member ||
+          (await interaction.guild.members.fetch(interaction.user.id));
+        const roleNamesToCheck = ["ISeal", "Community Manager"];
+        const hasRole = member.roles.cache.some((role) =>
+          roleNamesToCheck.includes(role.name)
+        );
+        if (hasRole) {
+          await interaction.reply({ embeds: [embed] });
+        } else {
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+    }
+    if (subcommand === "suggestion"){
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("How to format your suggestion")
+        .setDescription("Please follow the following steps to format your suggestion")
+        .addFields(
+          {
+            name: "Step 1",
+            value: "Go to the <#1157664317932584970> channel",
+            inline: true
+          },
+          {
+            name: "Step 2",
+            value: "Click on the `💡` reaction",
+            inline: true
+          },
+          {
+            name: "Step 3",
   }
 });
 
@@ -575,6 +681,10 @@ client.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
   if (interaction.customId === "updateModal") {
+    if (!interaction.guild) {
+      await interaction.reply({ content: "How did you even trigger this message... "});
+      return;
+    }
     const pluginID = interaction.fields.getTextInputValue("pluginIDinput");
     const version = interaction.fields.getTextInputValue("versionInfoInput");
     const updateInfo = interaction.fields.getTextInputValue("updateInfoInput");
