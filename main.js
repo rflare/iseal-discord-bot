@@ -20,21 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+//TODO: Line 545
+//TODO: Line 576
+
 import {
   Client,
   GatewayIntentBits,
   REST,
   Routes,
   EmbedBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  ActionRowBuilder,
 } from "discord.js";
 import { config } from "dotenv";
-
 // Loading the environment variables
 config();
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const KEY = process.env.KEY;
-
 const commands = [
   {
     name: "help",
@@ -89,6 +93,10 @@ const commands = [
     name: "download",
     description: "Get the latest download link",
   },
+  {
+    name: "update",
+    description: "Sends out a message for plugin updates (ADMIN ONLY)",
+  },
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
@@ -111,6 +119,7 @@ const client = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.GuildMembers,
   ],
+  allowedMentions: { parse: ["users", "roles", "everyone"] },
 });
 
 async function getLatestReleaseAsset(owner, repo) {
@@ -526,6 +535,92 @@ client.on("interactionCreate", async (interaction) => {
     );
     if (hasRole) {
       await interaction.reply({ embeds: [embed] });
+    } else {
+      await interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+  }
+  if (interaction.commandName === "update") {
+    const modal = new ModalBuilder()
+      .setCustomId("updateModal")
+      .setTitle("Update");
+    const pluginIDinput = new TextInputBuilder()
+      .setCustomId("pluginIDinput")
+      .setLabel("What is the ID for the plugin")
+      .setStyle(1)
+      .setMaxLength(2)
+      .setRequired(true);
+
+    const updateInfoInput = new TextInputBuilder()
+      .setCustomId("updateInfoInput")
+      .setLabel("What changed?")
+      .setStyle(2)
+      .setRequired(true);
+    const versionInfoInput = new TextInputBuilder()
+      .setCustomId("versionInfoInput")
+      .setLabel("Version of update")
+      .setStyle(1)
+      .setRequired(true);
+    const secondActionRow = new ActionRowBuilder().addComponents(
+      versionInfoInput
+    );
+    const firstActionRow = new ActionRowBuilder().addComponents(pluginIDinput);
+    const thirdActionRow = new ActionRowBuilder().addComponents(
+      updateInfoInput
+    );
+
+    modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
+    await interaction.showModal(modal);
+  }
+});
+
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isModalSubmit()) return;
+
+  if (interaction.customId === "updateModal") {
+    const pluginID = interaction.fields.getTextInputValue("pluginIDinput");
+    const version = interaction.fields.getTextInputValue("versionInfoInput");
+    const updateInfo = interaction.fields.getTextInputValue("updateInfoInput");
+    let pluginName;
+    let roleid;
+    if (pluginID === "pg") {
+      pluginName = "PowerGems";
+      roleid = "1158015875744551003";
+    } else if (pluginID === "op") {
+      pluginName = "OrePowers";
+      roleid = "1185692151716270121";
+    } else if (pluginID === "vc") {
+      pluginName = "Valocraft";
+      roleid = "1201124609060245555";
+    } else if (pluginID === "pp") {
+      pluginName = "ParkourProject";
+      roleid = "1215399455835029504";
+    }
+    const embed = new EmbedBuilder()
+      .setColor("#FFFF00")
+      .setTitle(`${pluginName} has updated to version ${version}`)
+      .setDescription(
+        `**What changed:**
+    ${updateInfo}`
+      )
+      .setTimestamp()
+      .setFooter({
+        text: "Made with ❤️ by LunarcatOwO",
+        iconURL:
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+      });
+    if (!interaction.guild) {
+      await interaction.reply({ embeds: [embed] });
+      return;
+    }
+    const member =
+      interaction.member ||
+      (await interaction.guild.members.fetch(interaction.user.id));
+    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      await interaction.reply({ content:`<@&${roleid}>`, embeds: [embed] });
     } else {
       await interaction.reply({ embeds: [embed], ephemeral: true });
     }
