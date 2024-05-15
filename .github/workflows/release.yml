@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - develop  # Trigger the workflow on push to main branch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Set the version of Node.js
+      - name: Get version
+        id: package
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+        shell: bash
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.package.outputs.version }}
+          release_name: Develop Release ${{ steps.package.outputs.version }}
+          draft: false
+          prerelease: true

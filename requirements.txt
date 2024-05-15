@@ -1,4 +1,0 @@
-discord
-responses
-dotenv
-flask
