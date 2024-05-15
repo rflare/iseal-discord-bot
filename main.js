@@ -35,7 +35,7 @@ import { config } from "dotenv";
 config();
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-const KEY = process.env.KEY;
+const TRIGGER_ROLES = process.env.TRIGGER_ROLES;
 const commands = [
   {
     name: "help",
@@ -234,7 +234,7 @@ client.on("interactionCreate", async (interaction) => {
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
 
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -258,7 +258,7 @@ client.on("interactionCreate", async (interaction) => {
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
@@ -292,7 +292,7 @@ client.on("interactionCreate", async (interaction) => {
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -346,7 +346,7 @@ client.on("interactionCreate", async (interaction) => {
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -395,7 +395,7 @@ client.on("interactionCreate", async (interaction) => {
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -427,7 +427,7 @@ client.on("interactionCreate", async (interaction) => {
       const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const roleNamesToCheck = TRIGGER_ROLES;
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
       );
@@ -455,7 +455,7 @@ client.on("interactionCreate", async (interaction) => {
       const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const roleNamesToCheck = TRIGGER_ROLES;
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
       );
@@ -483,7 +483,7 @@ client.on("interactionCreate", async (interaction) => {
       const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const roleNamesToCheck = TRIGGER_ROLES;
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
       );
@@ -511,7 +511,7 @@ client.on("interactionCreate", async (interaction) => {
       const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const roleNamesToCheck = TRIGGER_ROLES;
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
       );
@@ -561,7 +561,7 @@ client.on("interactionCreate", async (interaction) => {
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -608,7 +608,7 @@ client.on("interactionCreate", async (interaction) => {
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -664,7 +664,7 @@ Things tried:`,
       const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const roleNamesToCheck = TRIGGER_ROLES;
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
       );
@@ -697,7 +697,7 @@ Extra Notes (If applicable):`,
       const member =
         interaction.member ||
         (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = ["ISeal", "Community Manager"];
+      const roleNamesToCheck = TRIGGER_ROLES;
       const hasRole = member.roles.cache.some((role) =>
         roleNamesToCheck.includes(role.name)
       );
@@ -721,7 +721,7 @@ Extra Notes (If applicable):`,
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
@@ -791,7 +791,7 @@ client.on("interactionCreate", async (interaction) => {
     const member =
       interaction.member ||
       (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = ["ISeal", "Community Manager"];
+    const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
