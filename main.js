@@ -791,12 +791,12 @@ function help(interaction) {
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     if (!interaction.guild) {
-      await interaction.reply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed] });
       return;
     }
     const member =
       interaction.member ||
-      (await interaction.guild.members.fetch(interaction.user.id));
+      (interaction.guild.members.fetch(interaction.user.id));
 
     const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
@@ -804,9 +804,9 @@ function help(interaction) {
     );
 
     if (hasRole) {
-      await interaction.reply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed] });
     } else {
-      await interaction.reply({ embeds: [embed], ephemeral: true });
+      interaction.reply({ embeds: [embed], ephemeral: true });
     }
 }
 
@@ -827,14 +827,14 @@ function resourcepack(interaction)
     const roleNamesToCheck = TRIGGER_ROLES;
     const member =
       interaction.member ||
-      (await interaction.guild.members.fetch(interaction.user.id));
+      (interaction.guild.members.fetch(interaction.user.id));
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
     if (hasRole) {
-      await interaction.reply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed] });
     } else {
-      await interaction.reply({ embeds: [embed], ephemeral: true });
+      interaction.reply({ embeds: [embed], ephemeral: true });
     }
 }
 
@@ -854,19 +854,19 @@ function rp(interaction)
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
     if (!interaction.guild) {
-      await interaction.reply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed] });
       return;
     }
     const member =
       interaction.member ||
-      (await interaction.guild.members.fetch(interaction.user.id));
+      (interaction.guild.members.fetch(interaction.user.id));
     const roleNamesToCheck = TRIGGER_ROLES;
     const hasRole = member.roles.cache.some((role) =>
       roleNamesToCheck.includes(role.name)
     );
     if (hasRole) {
-      await interaction.reply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed] });
     } else {
-      await interaction.reply({ embeds: [embed], ephemeral: true });
+      interaction.reply({ embeds: [embed], ephemeral: true });
     }
 }
