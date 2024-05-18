@@ -174,6 +174,132 @@ async function getLatestReleaseAsset(owner, repo) {
   }
 }
 
+function help(interaction) {
+    const embed = new EmbedBuilder()
+      .setColor("#0099ff")
+      .setTitle("**Commands**")
+      .addFields(
+        { name: "/help", value: "Shows this page", inline: true },
+        {
+          name: "/resourcepack",
+          value: "Sends the resourcepack download links",
+          inline: true,
+        },
+        { name: "/rules", value: "Get the server's rules", inline: true },
+        {
+          name: "/config",
+          value: "Get how to access the config files for your plugins",
+          inline: true,
+        },
+        {
+          name: "/wiki <name>",
+          value: "Get the wiki link for the plugin you want to know about",
+          inline: true,
+        },
+        {
+          name: "/download",
+          value: "Get the latest download link for the plugins",
+          inline: true,
+        },
+        {
+          name: "/format <type>",
+          value:
+            "Get how to format your bug report or suggestions (for the plugins)",
+          inline: true,
+        },
+        {
+          name: "/botgithub",
+          value:
+            "Get the github link to the bot's code to report issues and give suggestions!",
+        }
+      )
+      .setTimestamp()
+      .setFooter({
+        text: "Made with ❤️ by LunarcatOwO",
+        iconURL:
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+      });
+    if (!interaction.guild) {
+      interaction.reply({ embeds: [embed] });
+      return;
+    }
+    const member =
+      interaction.member ||
+      (interaction.guild.members.fetch(interaction.user.id));
+
+    const roleNamesToCheck = TRIGGER_ROLES;
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+
+    if (hasRole) {
+      interaction.reply({ embeds: [embed] });
+    } else {
+      interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+}
+
+function resourcepack(interaction)
+{
+    const embed = new EmbedBuilder()
+      .setColor("#0099ff")
+      .setTitle("Resource Pack")
+      .setDescription(
+        "[Click me to download the default resourcepack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1193993804672421918/Powergems_Pack.zip?ex=662a00a2&is=6628af22&hm=ab75523cb14d11b57debef3faa3616e111e2f57d7a4674131d8d59740eeeba10&) /n [Click me to download the magic resource pack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1194529976645582858/PowerGems_magic_pack.zip?ex=6629f9bb&is=6628a83b&hm=157d405d2f872ff9365371da79c110c793cb6e89178a84b3d508e4f65c9f7218&)"
+      )
+      .setTimestamp()
+      .setFooter({
+        text: "Made with ❤️ by LunarcatOwO",
+        iconURL:
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+      });
+    const roleNamesToCheck = TRIGGER_ROLES;
+    const member =
+      interaction.member ||
+      (interaction.guild.members.fetch(interaction.user.id));
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      interaction.reply({ embeds: [embed] });
+    } else {
+      interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+}
+
+function rp(interaction)
+{
+    const embed = new EmbedBuilder()
+      .setColor("#0099ff")
+      .setTitle("Resource Pack")
+      .setDescription(
+        `[Click me to download the default resourcepack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1193993804672421918/Powergems_Pack.zip?ex=662a00a2&is=6628af22&hm=ab75523cb14d11b57debef3faa3616e111e2f57d7a4674131d8d59740eeeba10&) 
+[Click me to download the magic resource pack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1194529976645582858/PowerGems_magic_pack.zip?ex=6629f9bb&is=6628a83b&hm=157d405d2f872ff9365371da79c110c793cb6e89178a84b3d508e4f65c9f7218&)`
+      )
+      .setTimestamp()
+      .setFooter({
+        text: "Made with ❤️ by LunarcatOwO",
+        iconURL:
+          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+      });
+    if (!interaction.guild) {
+      interaction.reply({ embeds: [embed] });
+      return;
+    }
+    const member =
+      interaction.member ||
+      (interaction.guild.members.fetch(interaction.user.id));
+    const roleNamesToCheck = TRIGGER_ROLES;
+    const hasRole = member.roles.cache.some((role) =>
+      roleNamesToCheck.includes(role.name)
+    );
+    if (hasRole) {
+      interaction.reply({ embeds: [embed] });
+    } else {
+      interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+}
+
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -745,128 +871,4 @@ client.on("guildMemberAdd", async (member) => {
 
 client.login(TOKEN);
 
-function help(interaction) {
-    const embed = new EmbedBuilder()
-      .setColor("#0099ff")
-      .setTitle("**Commands**")
-      .addFields(
-        { name: "/help", value: "Shows this page", inline: true },
-        {
-          name: "/resourcepack",
-          value: "Sends the resourcepack download links",
-          inline: true,
-        },
-        { name: "/rules", value: "Get the server's rules", inline: true },
-        {
-          name: "/config",
-          value: "Get how to access the config files for your plugins",
-          inline: true,
-        },
-        {
-          name: "/wiki <name>",
-          value: "Get the wiki link for the plugin you want to know about",
-          inline: true,
-        },
-        {
-          name: "/download",
-          value: "Get the latest download link for the plugins",
-          inline: true,
-        },
-        {
-          name: "/format <type>",
-          value:
-            "Get how to format your bug report or suggestions (for the plugins)",
-          inline: true,
-        },
-        {
-          name: "/botgithub",
-          value:
-            "Get the github link to the bot's code to report issues and give suggestions!",
-        }
-      )
-      .setTimestamp()
-      .setFooter({
-        text: "Made with ❤️ by LunarcatOwO",
-        iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-      });
-    if (!interaction.guild) {
-      interaction.reply({ embeds: [embed] });
-      return;
-    }
-    const member =
-      interaction.member ||
-      (interaction.guild.members.fetch(interaction.user.id));
 
-    const roleNamesToCheck = TRIGGER_ROLES;
-    const hasRole = member.roles.cache.some((role) =>
-      roleNamesToCheck.includes(role.name)
-    );
-
-    if (hasRole) {
-      interaction.reply({ embeds: [embed] });
-    } else {
-      interaction.reply({ embeds: [embed], ephemeral: true });
-    }
-}
-
-function resourcepack(interaction)
-{
-    const embed = new EmbedBuilder()
-      .setColor("#0099ff")
-      .setTitle("Resource Pack")
-      .setDescription(
-        "[Click me to download the default resourcepack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1193993804672421918/Powergems_Pack.zip?ex=662a00a2&is=6628af22&hm=ab75523cb14d11b57debef3faa3616e111e2f57d7a4674131d8d59740eeeba10&) /n [Click me to download the magic resource pack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1194529976645582858/PowerGems_magic_pack.zip?ex=6629f9bb&is=6628a83b&hm=157d405d2f872ff9365371da79c110c793cb6e89178a84b3d508e4f65c9f7218&)"
-      )
-      .setTimestamp()
-      .setFooter({
-        text: "Made with ❤️ by LunarcatOwO",
-        iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-      });
-    const roleNamesToCheck = TRIGGER_ROLES;
-    const member =
-      interaction.member ||
-      (interaction.guild.members.fetch(interaction.user.id));
-    const hasRole = member.roles.cache.some((role) =>
-      roleNamesToCheck.includes(role.name)
-    );
-    if (hasRole) {
-      interaction.reply({ embeds: [embed] });
-    } else {
-      interaction.reply({ embeds: [embed], ephemeral: true });
-    }
-}
-
-function rp(interaction)
-{
-    const embed = new EmbedBuilder()
-      .setColor("#0099ff")
-      .setTitle("Resource Pack")
-      .setDescription(
-        `[Click me to download the default resourcepack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1193993804672421918/Powergems_Pack.zip?ex=662a00a2&is=6628af22&hm=ab75523cb14d11b57debef3faa3616e111e2f57d7a4674131d8d59740eeeba10&) 
-[Click me to download the magic resource pack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1194529976645582858/PowerGems_magic_pack.zip?ex=6629f9bb&is=6628a83b&hm=157d405d2f872ff9365371da79c110c793cb6e89178a84b3d508e4f65c9f7218&)`
-      )
-      .setTimestamp()
-      .setFooter({
-        text: "Made with ❤️ by LunarcatOwO",
-        iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-      });
-    if (!interaction.guild) {
-      interaction.reply({ embeds: [embed] });
-      return;
-    }
-    const member =
-      interaction.member ||
-      (interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = TRIGGER_ROLES;
-    const hasRole = member.roles.cache.some((role) =>
-      roleNamesToCheck.includes(role.name)
-    );
-    if (hasRole) {
-      interaction.reply({ embeds: [embed] });
-    } else {
-      interaction.reply({ embeds: [embed], ephemeral: true });
-    }
-}
